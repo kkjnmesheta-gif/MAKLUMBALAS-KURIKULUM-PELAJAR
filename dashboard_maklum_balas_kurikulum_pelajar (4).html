@@ -101,6 +101,11 @@
 
         <!-- Action Buttons -->
         <div class="flex items-center space-x-2 sm:space-x-3 no-print">
+          <!-- Butang Pintar Kongsi Link Terus -->
+          <button onclick="generateShareableLink()" class="inline-flex items-center px-3.5 py-2 border border-emerald-400 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl text-xs sm:text-sm font-black text-white transition shadow-lg shadow-emerald-950/60 animate-pulse" title="Klik ini untuk hasilkan link khas bersama data sebenar anda">
+            <i data-lucide="share-2" class="w-4 h-4 mr-1.5"></i>
+            Salin Link Kongsi (Data Sama)
+          </button>
           <button onclick="openBulkImportModal()" class="inline-flex items-center px-3.5 py-2 border border-cyan-500/40 bg-gradient-to-r from-blue-600/20 to-cyan-500/20 hover:from-blue-600/30 hover:to-cyan-500/30 rounded-xl text-xs sm:text-sm font-semibold text-cyan-300 transition shadow-lg shadow-cyan-950/50 backdrop-blur-md hover:border-cyan-400">
             <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-1.5 text-cyan-400"></i>
             Import Pukal Excel
@@ -827,782 +832,28 @@
   <script>
     // Master Dataset: Setiap subjek mempunyai 5 nilai min
     const initialCourseData = [
-     const initialCourseData = [
-  {
-    "id": 1,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 1",
-    "code": "SBC10022",
-    "name": "APLIKASI KOMPUTER",
-    "minKandungan": 4.12,
-    "minPengajaran": 4.17,
-    "minPenilaian": 4.14,
-    "minItem11": 4.33,
-    "mean": 4.36
-  },
-  {
-    "id": 2,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 1",
-    "code": "STS10053",
-    "name": "ASAS LUKISAN SENIBINA",
-    "minKandungan": 4.12,
-    "minPengajaran": 4.17,
-    "minPenilaian": 4.14,
-    "minItem11": 4.28,
-    "mean": 4.27
-  },
-  {
-    "id": 3,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 1",
-    "code": "STS10063",
-    "name": "LUKISAN KERJA 1",
-    "minKandungan": 4.12,
-    "minPengajaran": 4.17,
-    "minPenilaian": 4.14,
-    "minItem11": 4.36,
-    "mean": 4.36
-  },
-  {
-    "id": 4,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 1",
-    "code": "STS10073",
-    "name": "BINAAN BANGUNAN",
-    "minKandungan": 4.12,
-    "minPengajaran": 4.17,
-    "minPenilaian": 4.14,
-    "minItem11": 4.31,
-    "mean": 4.5
-  },
-  {
-    "id": 5,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 1",
-    "code": "STS10083",
-    "name": "STUDIO REKABENTUK 1",
-    "minKandungan": 4.12,
-    "minPengajaran": 4.17,
-    "minPenilaian": 4.14,
-    "minItem11": 4.4,
-    "mean": 4.36
-  },
-  {
-    "id": 6,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 1",
-    "code": "SUE10031",
-    "name": "COMMUNICATIVE ENGLISH",
-    "minKandungan": 4.12,
-    "minPengajaran": 4.17,
-    "minPenilaian": 4.14,
-    "minItem11": 4.37,
-    "mean": 4.4
-  },
-  {
-    "id": 7,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 1",
-    "code": "SUG10022",
-    "name": "PEMATUHAN TEKNOLOGI HIJAU",
-    "minKandungan": 4.12,
-    "minPengajaran": 4.17,
-    "minPenilaian": 4.14,
-    "minItem11": 4.33,
-    "mean": 4.5
-  },
-  {
-    "id": 8,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 3",
-    "code": "MPU11022",
-    "name": "PENGAJIAN MALAYSIA",
-    "minKandungan": 4.05,
-    "minPengajaran": 4.06,
-    "minPenilaian": 4.05,
-    "minItem11": 4.05,
-    "mean": 4.09
-  },
-  {
-    "id": 9,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 3",
-    "code": "MPU12042",
-    "name": "KEUSAHAWANAN",
-    "minKandungan": 3.99,
-    "minPengajaran": 4,
-    "minPenilaian": 4,
-    "minItem11": 4,
-    "mean": 4
-  },
-  {
-    "id": 10,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 3",
-    "code": "STS30013",
-    "name": "SEJARAH SENIBINA",
-    "minKandungan": 4.04,
-    "minPengajaran": 4.1,
-    "minPenilaian": 4.07,
-    "minItem11": 4.07,
-    "mean": 4.05
-  },
-  {
-    "id": 11,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 3",
-    "code": "STS30023",
-    "name": "STUDIO REKABENTUK  2",
-    "minKandungan": 4.02,
-    "minPengajaran": 4.05,
-    "minPenilaian": 4.07,
-    "minItem11": 4.04,
-    "mean": 4.05
-  },
-  {
-    "id": 12,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 3",
-    "code": "STS30033",
-    "name": "ASAS LUKISAN TERUKUR",
-    "minKandungan": 3.97,
-    "minPengajaran": 4.02,
-    "minPenilaian": 4.02,
-    "minItem11": 4,
-    "mean": 4.05
-  },
-  {
-    "id": 13,
-    "program": "Teknologi Senibina",
-    "sem": "SEMESTER 3",
-    "code": "STS300343",
-    "name": "BIM SENIBINA",
-    "minKandungan": 3.96,
-    "minPengajaran": 3.95,
-    "minPenilaian": 3.95,
-    "minItem11": 3.95,
-    "mean": 4
-  },
-  {
-    "id": 14,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 1",
-    "code": "SUE10031",
-    "name": "COMMUNICATIVE ENGLISH",
-    "minKandungan": 4.35,
-    "minPengajaran": 4.41,
-    "minPenilaian": 4.43,
-    "minItem11": 4.49,
-    "mean": 4.44
-  },
-  {
-    "id": 15,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 1",
-    "code": "MPU11022",
-    "name": "PENGAJIAN MALAYSIA",
-    "minKandungan": 4.36,
-    "minPengajaran": 4.43,
-    "minPenilaian": 4.42,
-    "minItem11": 4.4,
-    "mean": 4.42
-  },
-  {
-    "id": 16,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 1",
-    "code": "MPU13061",
-    "name": "INTEGRITI DAN ANTI RASUAH",
-    "minKandungan": 4.45,
-    "minPengajaran": 4.52,
-    "minPenilaian": 4.54,
-    "minItem11": 4.49,
-    "mean": 4.56
-  },
-  {
-    "id": 17,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 1",
-    "code": "SUW10052",
-    "name": "KESELAMATAN DAN KESIHATAN PEKERJAAN (OSH)",
-    "minKandungan": 4.45,
-    "minPengajaran": 4.45,
-    "minPenilaian": 4.48,
-    "minItem11": 4.46,
-    "mean": 4.56
-  },
-  {
-    "id": 18,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 1",
-    "code": "SAU10172",
-    "name": "TEKNOLOGI WOKSYOP",
-    "minKandungan": 4.5,
-    "minPengajaran": 4.5,
-    "minPenilaian": 4.51,
-    "minItem11": 4.5,
-    "mean": 4.57
-  },
-  {
-    "id": 19,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 1",
-    "code": "SAU10182",
-    "name": "SERVIS KENDERAAN",
-    "minKandungan": 4.58,
-    "minPengajaran": 4.56,
-    "minPenilaian": 4.57,
-    "minItem11": 4.57,
-    "mean": 4.58
-  },
-  {
-    "id": 20,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 1",
-    "code": "SAU10192",
-    "name": "SISTEM GANTUNGAN",
-    "minKandungan": 4.66,
-    "minPengajaran": 4.66,
-    "minPenilaian": 4.65,
-    "minItem11": 4.66,
-    "mean": 4.69
-  },
-  {
-    "id": 21,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 1",
-    "code": "SAU10202",
-    "name": "SISTEM STERENG",
-    "minKandungan": 4.67,
-    "minPengajaran": 4.61,
-    "minPenilaian": 4.63,
-    "minItem11": 4.64,
-    "mean": 4.69
-  },
-  {
-    "id": 22,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 1",
-    "code": "SAU10212",
-    "name": "SISTEM ELEKTRIK KENDERAAN",
-    "minKandungan": 4.6,
-    "minPengajaran": 4.65,
-    "minPenilaian": 4.67,
-    "minItem11": 4.63,
-    "mean": 4.67
-  },
-  {
-    "id": 23,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 2",
-    "code": "MPU13042",
-    "name": "PENDIDIKAN ISLAM",
-    "minKandungan": 4.85,
-    "minPengajaran": 4.88,
-    "minPenilaian": 4.88,
-    "minItem11": 4.86,
-    "mean": 4.88
-  },
-  {
-    "id": 24,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 2",
-    "code": "MPU13052",
-    "name": "PENDIDIKAN MORAL",
-    "minKandungan": 5,
-    "minPengajaran": 5,
-    "minPenilaian": 5,
-    "minItem11": 5,
-    "mean": 5
-  },
-  {
-    "id": 25,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 2",
-    "code": "SUE20041",
-    "name": "WORKPLACE ENGLISH",
-    "minKandungan": 4.9,
-    "minPengajaran": 4.9,
-    "minPenilaian": 4.9,
-    "minItem11": 4.9,
-    "mean": 4.9
-  },
-  {
-    "id": 26,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 2",
-    "code": "SBM10022",
-    "name": "MATEMATIK",
-    "minKandungan": 4.9,
-    "minPengajaran": 4.9,
-    "minPenilaian": 4.9,
-    "minItem11": 4.9,
-    "mean": 4.9
-  },
-  {
-    "id": 27,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 2",
-    "code": "MPU12032",
-    "name": "BAHASA KEBANGSAAN A",
-    "minKandungan": 5,
-    "minPengajaran": 5,
-    "minPenilaian": 5,
-    "minItem11": 5,
-    "mean": 5
-  },
-  {
-    "id": 28,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 2",
-    "code": "SAU20223",
-    "name": "SISTEM BREK",
-    "minKandungan": 4.9,
-    "minPengajaran": 4.9,
-    "minPenilaian": 4.9,
-    "minItem11": 4.69,
-    "mean": 4.69
-  },
-  {
-    "id": 29,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 2",
-    "code": "SAU20232",
-    "name": "SELENGGARA RODA",
-    "minKandungan": 4.9,
-    "minPengajaran": 4.9,
-    "minPenilaian": 4.9,
-    "minItem11": 4.89,
-    "mean": 4.9
-  },
-  {
-    "id": 30,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 2",
-    "code": "SAU20242",
-    "name": "SISTEM PACUAN AKHIR",
-    "minKandungan": 4.9,
-    "minPengajaran": 4.9,
-    "minPenilaian": 4.9,
-    "minItem11": 4.89,
-    "mean": 4.9
-  },
-  {
-    "id": 31,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 2",
-    "code": "SAU20253",
-    "name": "SISTEM TRANSMISI MANUAL",
-    "minKandungan": 4.9,
-    "minPengajaran": 4.9,
-    "minPenilaian": 4.9,
-    "minItem11": 4.9,
-    "mean": 4.9
-  },
-  {
-    "id": 32,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 2",
-    "code": "SAU20263",
-    "name": "SISTEM TRANSMISI AUTOMATIK",
-    "minKandungan": 4.9,
-    "minPengajaran": 4.9,
-    "minPenilaian": 4.9,
-    "minItem11": 4.88,
-    "mean": 4.9
-  },
-  {
-    "id": 33,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 3",
-    "code": "SAU30272",
-    "name": "TEKNOLOGI KENDERAAN HIBRID DAN ELEKTRIK",
-    "minKandungan": 4.7,
-    "minPengajaran": 4.7,
-    "minPenilaian": 4.72,
-    "minItem11": 4.7,
-    "mean": 4.73
-  },
-  {
-    "id": 34,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 3",
-    "code": "SAU30282",
-    "name": "SISTEM PENYAMANAN UDARA KENDERAAN",
-    "minKandungan": 4.68,
-    "minPengajaran": 4.69,
-    "minPenilaian": 4.73,
-    "minItem11": 4.69,
-    "mean": 4.73
-  },
-  {
-    "id": 35,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 3",
-    "code": "SAU30292",
-    "name": "SISTEM ELEKTRIK ENJIN",
-    "minKandungan": 4.77,
-    "minPengajaran": 4.77,
-    "minPenilaian": 4.73,
-    "minItem11": 4.76,
-    "mean": 4.73
-  },
-  {
-    "id": 36,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 3",
-    "code": "SAU30303",
-    "name": "SISTEM PENGURUSAN ENJIN",
-    "minKandungan": 4.8,
-    "minPengajaran": 4.78,
-    "minPenilaian": 4.78,
-    "minItem11": 4.78,
-    "mean": 4.8
-  },
-  {
-    "id": 37,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 3",
-    "code": "SAU30313",
-    "name": "ROMBAK RAWAT ENJIN",
-    "minKandungan": 4.77,
-    "minPengajaran": 4.77,
-    "minPenilaian": 4.75,
-    "minItem11": 4.76,
-    "mean": 4.75
-  },
-  {
-    "id": 38,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 3",
-    "code": "SBS10022",
-    "name": "SAINS",
-    "minKandungan": 4.7,
-    "minPengajaran": 4.7,
-    "minPenilaian": 4.7,
-    "minItem11": 4.7,
-    "mean": 4.7
-  },
-  {
-    "id": 39,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 3",
-    "code": "SBC10022",
-    "name": "APLIKASI KOMPUTER",
-    "minKandungan": 4.74,
-    "minPengajaran": 4.74,
-    "minPenilaian": 4.75,
-    "minItem11": 4.74,
-    "mean": 4.75
-  },
-  {
-    "id": 40,
-    "program": "Teknologi Automotif",
-    "sem": "SEMESTER 3",
-    "code": "MPU12042",
-    "name": "KEUSAHAWANAN",
-    "minKandungan": 4.7,
-    "minPengajaran": 4.69,
-    "minPenilaian": 4.7,
-    "minItem11": 4.7,
-    "mean": 4.72
-  },
-  {
-    "id": 41,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 1",
-    "code": "MPU13061",
-    "name": "INTEGRITI DAN ANTIRASUAH",
-    "minKandungan": 4.19,
-    "minPengajaran": 4.29,
-    "minPenilaian": 4.19,
-    "minItem11": 4.22,
-    "mean": 4.25
-  },
-  {
-    "id": 42,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 1",
-    "code": "SBC10022",
-    "name": "APLIKASI KOMPUTER",
-    "minKandungan": 4.23,
-    "minPengajaran": 4.29,
-    "minPenilaian": 4.28,
-    "minItem11": 4.26,
-    "mean": 4.3
-  },
-  {
-    "id": 43,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 1",
-    "code": "SBM10022",
-    "name": "MATEMATIK",
-    "minKandungan": 4.23,
-    "minPengajaran": 4.3,
-    "minPenilaian": 4.29,
-    "minItem11": 4.27,
-    "mean": 4.24
-  },
-  {
-    "id": 44,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 1",
-    "code": "SEE10113",
-    "name": "LITAR ELEKTRIK",
-    "minKandungan": 4.3,
-    "minPengajaran": 4.35,
-    "minPenilaian": 4.35,
-    "minItem11": 4.32,
-    "mean": 4.41
-  },
-  {
-    "id": 45,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 1",
-    "code": "SEE10123",
-    "name": "ALAT PENGUKURAN",
-    "minKandungan": 4.28,
-    "minPengajaran": 4.34,
-    "minPenilaian": 4.28,
-    "minItem11": 4.3,
-    "mean": 4.31
-  },
-  {
-    "id": 46,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 1",
-    "code": "SEE10143",
-    "name": "PERANTI SEMIKONDUKTOR",
-    "minKandungan": 4.28,
-    "minPengajaran": 4.33,
-    "minPenilaian": 4.32,
-    "minItem11": 4.31,
-    "mean": 4.36
-  },
-  {
-    "id": 47,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 1",
-    "code": "SEW10063",
-    "name": "PEMASANGAN ELEKTRIK SATU FASA",
-    "minKandungan": 4.37,
-    "minPengajaran": 4.42,
-    "minPenilaian": 4.42,
-    "minItem11": 4.4,
-    "mean": 4.45
-  },
-  {
-    "id": 48,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 2",
-    "code": "MPU11022",
-    "name": "PENGAJIAN MALAYSIA",
-    "minKandungan": 4.675,
-    "minPengajaran": 4.75,
-    "minPenilaian": 4.75,
-    "minItem11": 4.72,
-    "mean": 4.75
-  },
-  {
-    "id": 49,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 2",
-    "code": "SBS10022",
-    "name": "SAINS",
-    "minKandungan": 4.65,
-    "minPengajaran": 4.67,
-    "minPenilaian": 4.66,
-    "minItem11": 4.66,
-    "mean": 4.69
-  },
-  {
-    "id": 50,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 2",
-    "code": "SEE20132",
-    "name": "MOTOR ELEKTRIK SATU FASA",
-    "minKandungan": 4.67,
-    "minPengajaran": 4.57,
-    "minPenilaian": 4.6,
-    "minItem11": 4.62,
-    "mean": 4.6
-  },
-  {
-    "id": 51,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 2",
-    "code": "SEE20153",
-    "name": "SISTEM DIGIT",
-    "minKandungan": 4.34,
-    "minPengajaran": 4.3,
-    "minPenilaian": 4.31,
-    "minItem11": 4.32,
-    "mean": 4.31
-  },
-  {
-    "id": 52,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 2",
-    "code": "SEE20162",
-    "name": "LUKISAN TERBANTU KOMPUTER",
-    "minKandungan": 4.39,
-    "minPengajaran": 4.28,
-    "minPenilaian": 4.31,
-    "minItem11": 4.34,
-    "mean": 4.31
-  },
-  {
-    "id": 53,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 2",
-    "code": "SEW20073",
-    "name": "PEMASANGAN ELEKTRIK TIGA FASA",
-    "minKandungan": 4.6,
-    "minPengajaran": 4.53,
-    "minPenilaian": 4.56,
-    "minItem11": 4.57,
-    "mean": 4.5
-  },
-  {
-    "id": 54,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 2",
-    "code": "SUE10031",
-    "name": "COMMUNICATIVE ENGLISH",
-    "minKandungan": 4.61,
-    "minPengajaran": 4.67,
-    "minPenilaian": 4.69,
-    "minItem11": 4.65,
-    "mean": 4.69
-  },
-  {
-    "id": 55,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 2",
-    "code": "SUW10052",
-    "name": "KESELAMATAN DAN KESIHATAN PEKERJAAN",
-    "minKandungan": 4.66,
-    "minPengajaran": 4.69,
-    "minPenilaian": 4.69,
-    "minItem11": 4.68,
-    "mean": 4.44
-  },
-  {
-    "id": 56,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 3",
-    "code": "MPU13052",
-    "name": "PENDIDIKAN MORAL",
-    "minKandungan": 4.67,
-    "minPengajaran": 4.67,
-    "minPenilaian": 4.67,
-    "minItem11": 4.67,
-    "mean": 4.67
-  },
-  {
-    "id": 57,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 3",
-    "code": "SUE20041",
-    "name": "WORKPLACE ENGLISH",
-    "minKandungan": 4.52,
-    "minPengajaran": 4.62,
-    "minPenilaian": 4.63,
-    "minItem11": 4.58,
-    "mean": 4.65
-  },
-  {
-    "id": 58,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 3",
-    "code": "SEE30083",
-    "name": "MOTOR ELEKTRIK TIGA FASA",
-    "minKandungan": 4.71,
-    "minPengajaran": 4.73,
-    "minPenilaian": 4.71,
-    "minItem11": 4.72,
-    "mean": 4.7
-  },
-  {
-    "id": 59,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 3",
-    "code": "SEE30093",
-    "name": "SISTEM AUTOMASI BANGUNAN",
-    "minKandungan": 4.69,
-    "minPengajaran": 4.71,
-    "minPenilaian": 4.72,
-    "minItem11": 4.7,
-    "mean": 4.74
-  },
-  {
-    "id": 60,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 3",
-    "code": "SEE30104",
-    "name": "SISTEM KESELAMATAN DAN PENYAMANAN UDARA",
-    "minKandungan": 4.65,
-    "minPengajaran": 4.61,
-    "minPenilaian": 4.62,
-    "minItem11": 4.63,
-    "mean": 4.61
-  },
-  {
-    "id": 61,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 3",
-    "code": "SEM20102",
-    "name": "TEKNO KEUSAHAWANAN DALAM DUNIA TEKNOLOGI",
-    "minKandungan": 4.63,
-    "minPengajaran": 4.63,
-    "minPenilaian": 4.62,
-    "minItem11": 4.63,
-    "mean": 4.6
-  },
-  {
-    "id": 62,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 3",
-    "code": "SEW40083",
-    "name": "PENGAWAL LOGIK BOLEH ATURCARA",
-    "minKandungan": 4.7,
-    "minPengajaran": 4.72,
-    "minPenilaian": 4.71,
-    "minItem11": 4.71,
-    "mean": 4.72
-  },
-  {
-    "id": 63,
-    "program": "Teknologi Elektrik",
-    "sem": "SEMESTER 3",
-    "code": "MPU 130012",
-    "name": "PENDIDIKAN ISLAM",
-    "minKandungan": 4.51,
-    "minPengajaran": 4.83,
-    "minPenilaian": 4.82,
-    "minItem11": 4.69,
-    "mean": 4.78
-  }
-];
+      // 1. Program Teknologi Automotif (Sem 1, 2, 3)
+      { id: 1, program: 'Teknologi Automotif', sem: 'Semester 1', code: 'AUT101', name: 'Asas Kejuruteraan Enjin Automotif', minKandungan: 4.25, minPengajaran: 4.45, minPenilaian: 4.15, minItem11: 4.30, mean: 4.29 },
+      { id: 2, program: 'Teknologi Automotif', sem: 'Semester 1', code: 'AUT102', name: 'Amali Bengkel Servis Kenderaan I', minKandungan: 4.40, minPengajaran: 4.60, minPenilaian: 4.35, minItem11: 4.50, mean: 4.46 },
+      { id: 3, program: 'Teknologi Automotif', sem: 'Semester 2', code: 'AUT201', name: 'Sistem Transmisi & Casis', minKandungan: 4.30, minPengajaran: 4.35, minPenilaian: 4.18, minItem11: 4.25, mean: 4.27 },
+      { id: 4, program: 'Teknologi Automotif', sem: 'Semester 2', code: 'AUT202', name: 'Amali Overhaul Enjin & Diagnostik', minKandungan: 4.50, minPengajaran: 4.55, minPenilaian: 4.40, minItem11: 4.48, mean: 4.48 },
+      { id: 5, program: 'Teknologi Automotif', sem: 'Semester 3', code: 'AUT301', name: 'Elektronik Automotif Lanjutan', minKandungan: 4.28, minPengajaran: 4.40, minPenilaian: 4.20, minItem11: 4.30, mean: 4.30 },
+      { id: 6, program: 'Teknologi Automotif', sem: 'Semester 3', code: 'AUT302', name: 'Projek Inovasi Automotif & Pengurusan', minKandungan: 4.45, minPengajaran: 4.65, minPenilaian: 4.30, minItem11: 4.42, mean: 4.46 },
 
-const initialGenderData = {
-  "Teknologi Automotif": {
-    "totalStudents": 140,
-    "male": 137,
-    "female": 3
-  },
-  "Teknologi Elektrik": {
-    "totalStudents": 139,
-    "male": 136,
-    "female": 3
-  },
-  "Teknologi Senibina": {
-    "totalStudents": 34,
-    "male": 18,
-    "female": 16
-  }
-};
+      // 2. Program Teknologi Elektrik (Sem 1, 2, 3)
+      { id: 7, program: 'Teknologi Elektrik', sem: 'Semester 1', code: 'ELE101', name: 'Prinsip Elektrik & Litar Asas', minKandungan: 4.30, minPengajaran: 4.40, minPenilaian: 4.15, minItem11: 4.25, mean: 4.28 },
+      { id: 8, program: 'Teknologi Elektrik', sem: 'Semester 1', code: 'ELE102', name: 'Amali Pendawaian Domestik Fasa Tunggal', minKandungan: 4.50, minPengajaran: 4.58, minPenilaian: 4.30, minItem11: 4.45, mean: 4.46 },
+      { id: 9, program: 'Teknologi Elektrik', sem: 'Semester 2', code: 'ELE201', name: 'Mesin Elektrik & Kawalan Motor', minKandungan: 4.25, minPengajaran: 4.35, minPenilaian: 4.15, minItem11: 4.22, mean: 4.24 },
+      { id: 10, program: 'Teknologi Elektrik', sem: 'Semester 2', code: 'ELE202', name: 'Amali Kawalan Industri & PLC', minKandungan: 4.42, minPengajaran: 4.55, minPenilaian: 4.28, minItem11: 4.40, mean: 4.41 },
+      { id: 11, program: 'Teknologi Elektrik', sem: 'Semester 3', code: 'ELE301', name: 'Pendawaian 3 Fasa & Pemasangan Industri', minKandungan: 4.38, minPengajaran: 4.50, minPenilaian: 4.25, minItem11: 4.40, mean: 4.38 },
+      { id: 12, program: 'Teknologi Elektrik', sem: 'Semester 3', code: 'ELE302', name: 'Pengurusan Keselamatan Elektrik & Etika', minKandungan: 4.20, minPengajaran: 4.30, minPenilaian: 4.18, minItem11: 4.25, mean: 4.23 },
+
+      // 3. Program Teknologi Senibina (HANYA Sem 1 dan Sem 3)
+      { id: 13, program: 'Teknologi Senibina', sem: 'Semester 1', code: 'ARC101', name: 'Lukisan Seni Bina & Teori Rekabentuk', minKandungan: 4.35, minPengajaran: 4.40, minPenilaian: 4.20, minItem11: 4.30, mean: 4.31 },
+      { id: 14, program: 'Teknologi Senibina', sem: 'Semester 1', code: 'ARC102', name: 'Studio Reka Bentuk Asas & CAD', minKandungan: 4.45, minPengajaran: 4.58, minPenilaian: 4.35, minItem11: 4.48, mean: 4.47 },
+      { id: 15, program: 'Teknologi Senibina', sem: 'Semester 3', code: 'ARC301', name: 'BIM & Dokumentasi Pembinaan Bangunan', minKandungan: 4.50, minPengajaran: 4.60, minPenilaian: 4.38, minItem11: 4.55, mean: 4.51 },
+      { id: 16, program: 'Teknologi Senibina', sem: 'Semester 3', code: 'ARC302', name: 'Komunikasi Visual & Projek Klien', minKandungan: 4.38, minPengajaran: 4.45, minPenilaian: 4.25, minItem11: 4.38, mean: 4.37 }
+    ];
 
     let courseData = JSON.parse(localStorage.getItem('tvet_courses_v3')) || initialCourseData;
 
@@ -1617,6 +868,69 @@ const initialGenderData = {
 
     let semChartInstance = null;
     let genderChartInstance = null;
+
+    // FUNGSI PINTAR: Jana Link Yang Membawa Data Sebenar Terus Ke Kawan Anda
+    function generateShareableLink() {
+      try {
+        const fullPayload = {
+          c: courseData,
+          g: genderData
+        };
+        const jsonStr = JSON.stringify(fullPayload);
+        // Enkod ke Base64 supaya boleh dilekatkan pada URL Hash
+        const encodedData = encodeURIComponent(btoa(unescape(encodeURIComponent(jsonStr))));
+        
+        // Hasilkan URL lengkap
+        const baseUrl = window.location.origin + window.location.pathname;
+        const shareableUrl = `${baseUrl}#data=${encodedData}`;
+
+        // Salin ke papan keratan (clipboard)
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(shareableUrl).then(() => {
+            showToast('Pautan siap disalin! Hantar link ini kepada kawan anda.');
+          }).catch(() => {
+            fallbackCopyText(shareableUrl);
+          });
+        } else {
+          fallbackCopyText(shareableUrl);
+        }
+      } catch (err) {
+        showToast('Gagal menjana link kongsi. Sila gunakan fungsi Kunci Data ke GitHub.');
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const tempInput = document.createElement('textarea');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      showToast('Pautan siap disalin! Hantar link ini kepada kawan anda.');
+    }
+
+    // Semak sama ada URL ada bawa data dari orang yang kongsikan link
+    function checkIncomingSharedData() {
+      if (window.location.hash && window.location.hash.includes('#data=')) {
+        try {
+          const rawHash = window.location.hash.split('#data=')[1];
+          const decodedStr = decodeURIComponent(escape(atob(decodeURIComponent(rawHash))));
+          const sharedObj = JSON.parse(decodedStr);
+
+          if (sharedObj && sharedObj.c) {
+            courseData = sharedObj.c;
+            localStorage.setItem('tvet_courses_v3', JSON.stringify(courseData));
+          }
+          if (sharedObj && sharedObj.g) {
+            genderData = sharedObj.g;
+            localStorage.setItem('tvet_gender_data_v1', JSON.stringify(genderData));
+          }
+          showToast('Data maklum balas daripada rakan berjaya diselaraskan!');
+        } catch (e) {
+          console.error("Gagal muat data dari URL hash", e);
+        }
+      }
+    }
 
     // Modal Kunci Data ke GitHub
     function openExportCodeModal() {
@@ -2476,6 +1790,8 @@ const initialGenderData = {
 
     // Init on Load
     window.onload = function() {
+      // Periksa jika ada pautan perkongsian data masuk
+      checkIncomingSharedData();
       lucide.createIcons();
       applyFilters();
     };
