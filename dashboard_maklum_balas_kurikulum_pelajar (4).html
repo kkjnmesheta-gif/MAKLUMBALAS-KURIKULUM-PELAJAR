@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Maklum Balas Kurikulum Pelajar TVET</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            electric: {
+              violet: '#7c3aed',
+              fuchsia: '#d946ef',
+              cyan: '#06b6d4',
+              teal: '#14b8a6',
+              emerald: '#10b981',
+              amber: '#f59e0b',
+              rose: '#f43f5e',
+            }
+          },
+          backgroundImage: {
+            'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+    
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.35);
+    }
+    .glow-purple {
+      box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.35);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.35);
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .glass-card { background: white !important; border: 1px solid #ccc !important; box-shadow: none !important; color: black !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col relative overflow-x-hidden selection:bg-fuchsia-500 selection:text-white">
+
+  <!-- Ambient Vibrant Glowing Orbs in Background -->
+  <div class="fixed top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-indigo-600/30 via-purple-600/20 to-transparent blur-[120px] pointer-events-none -z-10 animate-pulse"></div>
+  <div class="fixed top-[20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-cyan-500/25 via-teal-500/15 to-transparent blur-[140px] pointer-events-none -z-10"></div>
+  <div class="fixed bottom-[-10%] left-[20%] w-[550px] h-[550px] rounded-full bg-gradient-to-tr from-pink-600/20 via-rose-500/15 to-transparent blur-[130px] pointer-events-none -z-10"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="bg-slate-900/80 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-18 py-3">
+        <!-- Logo & Title -->
+        <div class="flex items-center space-x-3.5">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/30 ring-2 ring-white/20">
+            <i data-lucide="sparkles" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-lg sm:text-xl font-black bg-gradient-to-r from-white via-indigo-100 to-cyan-300 bg-clip-text text-transparent">
+                Analisis Maklum Balas Kurikulum TVET
+              </h1>
+              <span class="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 tracking-wide uppercase">
+                Pro Edisi
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 font-medium">Teknologi Automotif • Teknologi Elektrik • Teknologi Senibina</p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center space-x-2 sm:space-x-3 no-print">
+          <button onclick="openBulkImportModal()" class="inline-flex items-center px-3.5 py-2 border border-cyan-500/40 bg-gradient-to-r from-blue-600/20 to-cyan-500/20 hover:from-blue-600/30 hover:to-cyan-500/30 rounded-xl text-xs sm:text-sm font-semibold text-cyan-300 transition shadow-lg shadow-cyan-950/50 backdrop-blur-md hover:border-cyan-400">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-1.5 text-cyan-400"></i>
+            Import Pukal Excel
+          </button>
+          <button onclick="openCourseCanvasModal()" class="inline-flex items-center px-3.5 py-2 border border-emerald-500/40 bg-gradient-to-r from-emerald-500/15 to-teal-500/15 hover:from-emerald-500/25 hover:to-teal-500/25 rounded-xl text-xs sm:text-sm font-semibold text-emerald-300 transition shadow-lg shadow-emerald-950/50 backdrop-blur-md hover:border-emerald-400">
+            <i data-lucide="plus-circle" class="w-4 h-4 mr-1.5 text-emerald-400"></i>
+            Tambah Subjek
+          </button>
+          <button onclick="openDemographicsModal()" class="inline-flex items-center px-3.5 py-2 border border-fuchsia-500/40 bg-gradient-to-r from-purple-600/20 to-pink-500/20 hover:from-purple-600/30 hover:to-pink-500/30 rounded-xl text-xs sm:text-sm font-semibold text-fuchsia-300 transition shadow-lg shadow-pink-950/50 backdrop-blur-md hover:border-pink-400">
+            <i data-lucide="users" class="w-4 h-4 mr-1.5 text-pink-400"></i>
+            Data Responden & Jantina
+          </button>
+          <button onclick="openExportCodeModal()" class="inline-flex items-center px-3.5 py-2 border border-amber-500/40 bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 rounded-xl text-xs sm:text-sm font-semibold text-amber-300 transition shadow-lg shadow-amber-950/50 backdrop-blur-md hover:border-amber-400" title="Kunci data ini ke GitHub supaya semua orang nampak sama">
+            <i data-lucide="code-2" class="w-4 h-4 mr-1.5 text-amber-400"></i>
+            Kunci Data ke GitHub
+          </button>
+          <button onclick="openEditModal()" class="inline-flex items-center px-3.5 py-2 border border-slate-700/80 bg-slate-800/80 hover:bg-slate-700/80 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 transition">
+            <i data-lucide="edit-3" class="w-4 h-4 mr-1.5 text-slate-400"></i>
+            Kemas Kini Data Min
+          </button>
+          <button onclick="window.print()" class="inline-flex items-center px-3 py-2 border border-slate-700/80 rounded-xl text-xs sm:text-sm font-semibold text-slate-300 bg-slate-800/80 hover:bg-slate-700/80 hover:text-white transition shadow-sm">
+            <i data-lucide="printer" class="w-4 h-4 mr-1.5 text-slate-400"></i>
+            Cetak
+          </button>
+          <button onclick="exportTableToCSV('maklumbalas-kurikulum-tvet.csv')" class="inline-flex items-center px-3.5 py-2 bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 text-white rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-indigo-600/30 transition duration-200">
+            <i data-lucide="download" class="w-4 h-4 mr-1.5"></i>
+            Eksport CSV
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-gradient-to-r from-slate-900 to-indigo-950 text-white border border-indigo-500/40 px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 glow-purple">
+    <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+      <i data-lucide="check" class="w-4 h-4"></i>
+    </div>
+    <span id="toast-message" class="text-sm font-medium">Tindakan berjaya!</span>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-7">
+    
+    <!-- Title & Filter Section with Glowing Borders -->
+    <div class="glass-card rounded-3xl p-6 sm:p-7 relative overflow-hidden">
+      <div class="absolute -right-16 -top-16 w-60 h-60 bg-gradient-to-bl from-indigo-500/10 via-pink-500/10 to-transparent rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-cyan-500/20 to-teal-500/20 text-cyan-300 border border-cyan-500/30 mb-2">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+            Semakan Kualiti & Indeks Kepuasan Pembelajaran TVET
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            Prestasi Kurikulum Mengikut Kursus, Kluster & Semester
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1">Pemantauan skor min bagi 3 kluster kurikulum dan perbandingan semester antara program.</p>
+        </div>
+
+        <button onclick="resetFilters()" class="text-xs font-bold text-slate-300 hover:text-cyan-300 px-3.5 py-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition inline-flex items-center gap-2 self-start md:self-auto shadow-sm">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-cyan-400"></i>
+          Set Semula Penapis
+        </button>
+      </div>
+
+      <!-- Filters Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 mt-4 border-t border-slate-800/80">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+            Pilih Program
+          </label>
+          <div class="relative">
+            <select id="filter-program" onchange="applyFilters()" class="w-full pl-4 pr-10 py-2.5 bg-slate-900/90 text-sm text-slate-200 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400 focus:outline-none transition font-semibold appearance-none cursor-pointer">
+              <option value="Semua" selected>Semua Program (3 Program)</option>
+              <option value="Teknologi Automotif">Teknologi Automotif (Sem 1, 2, 3)</option>
+              <option value="Teknologi Elektrik">Teknologi Elektrik (Sem 1, 2, 3)</option>
+              <option value="Teknologi Senibina">Teknologi Senibina (Sem 1 & 3)</option>
+            </select>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none"></i>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+            Semester
+          </label>
+          <div class="relative">
+            <select id="filter-semester" onchange="applyFilters()" class="w-full pl-4 pr-10 py-2.5 bg-slate-900/90 text-sm text-slate-200 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-400 focus:outline-none transition font-semibold appearance-none cursor-pointer">
+              <option value="Semua" selected>Semua Semester</option>
+              <option value="Semester 1">Semester 1</option>
+              <option value="Semester 2">Semester 2</option>
+              <option value="Semester 3">Semester 3</option>
+            </select>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none"></i>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-fuchsia-400"></span>
+            Susunan Prestasi
+          </label>
+          <div class="relative">
+            <select id="filter-sort" onchange="applyFilters()" class="w-full pl-4 pr-10 py-2.5 bg-slate-900/90 text-sm text-slate-200 border border-slate-700/80 rounded-xl focus:ring-2 focus:ring-fuchsia-500 focus:border-fuchsia-400 focus:outline-none transition font-semibold appearance-none cursor-pointer">
+              <option value="default" selected>Susunan Asal Kod Subjek</option>
+              <option value="overall-desc">Min Keseluruhan (Tertinggi - Terendah)</option>
+              <option value="kandungan-desc">Min Kandungan Tertinggi</option>
+              <option value="pengajaran-desc">Min Pengajaran Tertinggi</option>
+              <option value="penilaian-desc">Min Penilaian Tertinggi</option>
+              <option value="item11-desc">Min 11 Item Tertinggi</option>
+            </select>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 KAD UTAMA: PURATA MIN KANDUNGAN, PENGAJARAN, PENILAIAN, 11 ITEM & KESELURUHAN -->
+    <div>
+      <div class="flex items-center justify-between mb-3 px-1">
+        <h3 class="text-xs sm:text-sm font-extrabold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+          <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
+          Purata 5 Dimensi Kluster (Mengikut Kursus Yang Dipilih)
+        </h3>
+        <span class="text-xs text-slate-400 font-semibold bg-slate-800/60 px-2.5 py-1 rounded-full border border-slate-700/60">Skala Penilaian: 1.00 - 5.00</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- Kad 1: MIN KANDUNGAN -->
+        <div class="glass-card p-5 rounded-3xl relative overflow-hidden group hover:border-cyan-400/50 transition-all duration-300">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-500 to-cyan-400"></div>
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">1. Kandungan</span>
+            <div class="w-7 h-7 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 flex items-center justify-center glow-cyan">
+              <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+            </div>
+          </div>
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-3">MIN KANDUNGAN</h4>
+          <div class="flex items-baseline space-x-1 mt-1">
+            <h3 id="card-min-kandungan" class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-300">4.35</h3>
+            <span class="text-xs text-slate-400 font-bold">/ 5.00</span>
+          </div>
+          <p class="mt-2 text-[11px] text-cyan-400 font-medium">Relevansi & silibus teori</p>
+        </div>
+
+        <!-- Kad 2: MIN PENGAJARAN -->
+        <div class="glass-card p-5 rounded-3xl relative overflow-hidden group hover:border-purple-400/50 transition-all duration-300">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">2. Pengajaran</span>
+            <div class="w-7 h-7 rounded-xl bg-purple-500/15 text-purple-400 border border-purple-500/30 flex items-center justify-center glow-purple">
+              <i data-lucide="presentation" class="w-3.5 h-3.5"></i>
+            </div>
+          </div>
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-3">MIN PENGAJARAN</h4>
+          <div class="flex items-baseline space-x-1 mt-1">
+            <h3 id="card-min-pengajaran" class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-100 to-purple-300">4.48</h3>
+            <span class="text-xs text-slate-400 font-bold">/ 5.00</span>
+          </div>
+          <p class="mt-2 text-[11px] text-purple-400 font-medium">Pedagogi & penyampaian</p>
+        </div>
+
+        <!-- Kad 3: MIN PENILAIAN -->
+        <div class="glass-card p-5 rounded-3xl relative overflow-hidden group hover:border-amber-400/50 transition-all duration-300">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-500 to-orange-400"></div>
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">3. Penilaian</span>
+            <div class="w-7 h-7 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center">
+              <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i>
+            </div>
+          </div>
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-3">MIN PENILAIAN</h4>
+          <div class="flex items-baseline space-x-1 mt-1">
+            <h3 id="card-min-penilaian" class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-100 to-amber-300">4.22</h3>
+            <span class="text-xs text-slate-400 font-bold">/ 5.00</span>
+          </div>
+          <p class="mt-2 text-[11px] text-amber-400 font-medium">Pentaksiran & rubrik telus</p>
+        </div>
+
+        <!-- Kad 4: MIN 11 ITEM -->
+        <div class="glass-card p-5 rounded-3xl relative overflow-hidden group hover:border-emerald-400/50 transition-all duration-300 glow-emerald">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-400"></div>
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">4. 11 Item</span>
+            <div class="w-7 h-7 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+              <i data-lucide="list-checks" class="w-3.5 h-3.5"></i>
+            </div>
+          </div>
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-3">MIN 11 ITEM</h4>
+          <div class="flex items-baseline space-x-1 mt-1">
+            <h3 id="card-min-11-item" class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-100 to-emerald-300">4.35</h3>
+            <span class="text-xs text-slate-400 font-bold">/ 5.00</span>
+          </div>
+          <p class="mt-2 text-[11px] text-emerald-400 font-medium">Skor 11 instrumen subjek</p>
+        </div>
+
+        <!-- Kad 5: MIN KESELURUHAN -->
+        <div class="glass-card p-5 rounded-3xl relative overflow-hidden group hover:border-pink-400/50 transition-all duration-300">
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-pink-500 to-rose-400"></div>
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 border border-pink-500/30">5. Keseluruhan</span>
+            <div class="w-7 h-7 rounded-xl bg-pink-500/15 text-pink-400 border border-pink-500/30 flex items-center justify-center">
+              <i data-lucide="star" class="w-3.5 h-3.5"></i>
+            </div>
+          </div>
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mt-3">MIN KESELURUHAN</h4>
+          <div class="flex items-baseline space-x-1 mt-1">
+            <h3 id="card-min-keseluruhan" class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-pink-100 to-rose-300">4.35</h3>
+            <span class="text-xs text-slate-400 font-bold">/ 5.00</span>
+          </div>
+          <p class="mt-2 text-[11px] text-pink-400 font-medium">Purata komposit subjek</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Summary Row with Vivid Gradients -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="glass-card p-5 rounded-3xl relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Purata Min Keseluruhan</p>
+          <div class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <i data-lucide="activity" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <div class="flex items-baseline space-x-1.5 mt-2">
+          <h3 id="kpi-avg-mean" class="text-3xl sm:text-4xl font-black text-white">4.25</h3>
+          <span class="text-xs text-slate-400 font-bold">/ 5.00</span>
+        </div>
+        <p class="mt-2 text-xs text-emerald-400 font-semibold flex items-center">
+          <i data-lucide="check-circle" class="w-3.5 h-3.5 mr-1"></i> Mencapai Penanda Aras (> 4.00)
+        </p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Jumlah Responden</p>
+          <div class="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+            <i data-lucide="users" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <h3 id="kpi-total-respondents" class="text-3xl sm:text-4xl font-black text-white mt-2">456 Pelajar</h3>
+        <p id="kpi-participation-rate" class="mt-2 text-xs text-slate-400 flex items-center">
+          <i data-lucide="check-check" class="w-3.5 h-3.5 mr-1 text-cyan-400"></i> Kadar penyertaan 94.8%
+        </p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Nisbah Jantina (L : P)</p>
+          <div class="w-8 h-8 rounded-xl bg-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center">
+            <i data-lucide="pie-chart" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <h3 id="kpi-gender-ratio" class="text-2xl sm:text-3xl font-black text-white mt-2">339 L : 117 P</h3>
+        <p id="kpi-gender-percentage" class="mt-2 text-xs text-slate-400 flex items-center">
+          <span class="w-2 h-2 rounded-full bg-blue-400 mr-1.5"></span> 74% L &nbsp;|&nbsp; 
+          <span class="w-2 h-2 rounded-full bg-pink-400 mx-1.5"></span> 26% P
+        </p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Kursus Dinilai</p>
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <h3 id="kpi-course-count" class="text-3xl sm:text-4xl font-black text-white mt-2">16 Kursus</h3>
+        <p class="mt-2 text-xs text-slate-400 flex items-center">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 mr-1 text-amber-400"></i> 100% kurikulum selesai semakan
+        </p>
+      </div>
+    </div>
+
+    <!-- Charts Row: Semester Comparison & Gender Demographics -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Chart: Min Kursus Mengikut Semester & Program (Vibrant Bars) -->
+      <div class="lg:col-span-2 glass-card p-6 sm:p-7 rounded-3xl flex flex-col justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+              Perbandingan Purata Min Kursus Mengikut Semester
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5" id="chart-subtext">
+              Automotif (Sem 1, 2, 3) | Elektrik (Sem 1, 2, 3) | Senibina (Sem 1 & 3)
+            </p>
+          </div>
+          <span class="text-xs px-3 py-1 bg-slate-800/90 border border-slate-700/80 font-bold text-cyan-300 rounded-xl self-start sm:self-auto">
+            Skor Min (1.0 - 5.0)
+          </span>
+        </div>
+        <div class="relative h-80 w-full pt-2">
+          <canvas id="semesterCourseChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart: Responden Mengikut Jantina Setiap Program (Neon Stacked) -->
+      <div class="glass-card p-6 sm:p-7 rounded-3xl flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-pink-400"></span>
+                Responden Mengikut Jantina
+              </h3>
+              <p class="text-xs text-slate-400">Pecahan pelajar bagi setiap program</p>
+            </div>
+            <button onclick="openDemographicsModal()" class="w-9 h-9 rounded-xl bg-pink-500/10 hover:bg-pink-500/20 text-pink-400 border border-pink-500/20 flex items-center justify-center transition" title="Kemas Kini Responden">
+              <i data-lucide="user-cog" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="relative h-64 w-full pt-2">
+            <canvas id="genderChart"></canvas>
+          </div>
+        </div>
+        <div id="gender-summary-text" class="text-center pt-3 border-t border-slate-800/80 text-xs text-slate-400 font-medium">
+          Memuatkan demografi responden...
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Section: Senarai Kursus & 5 Nilai Min (Membaiki ralat courseTableBody) -->
+    <div class="glass-card rounded-3xl p-6 sm:p-7 relative overflow-hidden">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h3 class="text-lg font-black text-white flex items-center gap-2">
+            <i data-lucide="table-2" class="w-5 h-5 text-cyan-400"></i>
+            Senarai Kursus & Pecahan 5 Skor Min Pelajar
+          </h3>
+          <p class="text-xs text-slate-400 mt-0.5">Paparan terperinci bagi setiap subjek silibus mengikut program dan semester</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="relative w-full sm:w-64">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none"></i>
+            <input type="text" id="courseSearch" onkeyup="filterCoursesTable()" placeholder="Cari kod atau nama kursus..." class="w-full pl-9 pr-4 py-2 bg-slate-900/90 text-xs text-white border border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:outline-none transition font-medium">
+          </div>
+          <button onclick="openCourseCanvasModal()" class="px-3.5 py-2 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-bold text-xs rounded-xl transition flex items-center gap-1.5 whitespace-nowrap">
+            <i data-lucide="plus" class="w-4 h-4"></i> Tambah
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-slate-800/80">
+        <table id="courseTable" class="w-full text-left text-xs">
+          <thead class="bg-slate-900/90 text-slate-300 uppercase tracking-wider text-[10px] font-extrabold border-b border-slate-800">
+            <tr>
+              <th scope="col" class="py-3.5 px-5">Program</th>
+              <th scope="col" class="py-3.5 px-3">Semester</th>
+              <th scope="col" class="py-3.5 px-4">Kod & Kursus</th>
+              <th scope="col" class="py-3.5 px-3 text-center text-cyan-400">1. Min Kand.</th>
+              <th scope="col" class="py-3.5 px-3 text-center text-purple-400">2. Min Ajar</th>
+              <th scope="col" class="py-3.5 px-3 text-center text-amber-400">3. Min Nilai</th>
+              <th scope="col" class="py-3.5 px-3 text-center text-emerald-400">4. Min 11-Item</th>
+              <th scope="col" class="py-3.5 px-3 text-center text-pink-400">Min Keseluruhan</th>
+              <th scope="col" class="py-3.5 px-4 text-center no-print">Tindakan</th>
+              <th scope="col" class="py-3.5 px-5">Status Prestasi</th>
+            </tr>
+          </thead>
+          <tbody id="courseTableBody" class="divide-y divide-slate-800/50">
+            <!-- Senarai kursus dijana secara dinamik oleh renderTable() -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal Urus Data Responden & Jantina -->
+  <div id="demographicsModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
+    <div class="glass-card rounded-3xl max-w-2xl w-full flex flex-col overflow-hidden border border-fuchsia-500/40 shadow-2xl glow-purple">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center">
+            <i data-lucide="users-round" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-white text-base">Urus Bilangan Pelajar, Responden & Jantina</h3>
+            <p class="text-[11px] text-slate-400">Masukkan jumlah enrolmen serta bilangan responden lelaki dan perempuan mengikut program</p>
+          </div>
+        </div>
+        <button onclick="closeDemographicsModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-5 text-xs max-h-[75vh] overflow-y-auto">
+        
+        <!-- Teknologi Automotif -->
+        <div class="p-4 rounded-2xl bg-slate-900/80 border border-indigo-500/30 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-indigo-300 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span> Teknologi Automotif
+            </span>
+            <span class="text-[11px] font-semibold text-slate-400" id="demo-summary-auto">0 Responden</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block font-bold text-slate-400 mb-1">Jumlah Pelajar (Enrolmen)</label>
+              <input type="number" min="0" id="input-enrol-auto" value="190" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-cyan-400 mb-1">Responden Lelaki</label>
+              <input type="number" min="0" id="input-male-auto" value="165" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-pink-400 mb-1">Responden Perempuan</label>
+              <input type="number" min="0" id="input-female-auto" value="15" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold focus:ring-2 focus:ring-pink-500 focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Teknologi Elektrik -->
+        <div class="p-4 rounded-2xl bg-slate-900/80 border border-cyan-500/30 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-cyan-300 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Teknologi Elektrik
+            </span>
+            <span class="text-[11px] font-semibold text-slate-400" id="demo-summary-ele">0 Responden</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block font-bold text-slate-400 mb-1">Jumlah Pelajar (Enrolmen)</label>
+              <input type="number" min="0" id="input-enrol-ele" value="165" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-cyan-400 mb-1">Responden Lelaki</label>
+              <input type="number" min="0" id="input-male-ele" value="118" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-pink-400 mb-1">Responden Perempuan</label>
+              <input type="number" min="0" id="input-female-ele" value="38" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold focus:ring-2 focus:ring-pink-500 focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Teknologi Senibina -->
+        <div class="p-4 rounded-2xl bg-slate-900/80 border border-amber-500/30 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-amber-300 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Teknologi Senibina
+            </span>
+            <span class="text-[11px] font-semibold text-slate-400" id="demo-summary-arc">0 Responden</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block font-bold text-slate-400 mb-1">Jumlah Pelajar (Enrolmen)</label>
+              <input type="number" min="0" id="input-enrol-arc" value="125" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold focus:ring-2 focus:ring-amber-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-cyan-400 mb-1">Responden Lelaki</label>
+              <input type="number" min="0" id="input-male-arc" value="56" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-pink-400 mb-1">Responden Perempuan</label>
+              <input type="number" min="0" id="input-female-arc" value="64" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold focus:ring-2 focus:ring-pink-500 focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="p-4 border-t border-slate-800 bg-slate-900/90 flex justify-end gap-2.5">
+        <button type="button" onclick="closeDemographicsModal()" class="px-4 py-2 border border-slate-700 rounded-xl text-slate-300 font-bold hover:bg-slate-800 transition">
+          Batal
+        </button>
+        <button type="button" onclick="saveDemographicsData()" class="px-5 py-2 bg-gradient-to-r from-fuchsia-600 to-pink-600 hover:from-fuchsia-500 hover:to-pink-500 text-white rounded-xl font-bold shadow-lg shadow-pink-500/20 transition flex items-center gap-1.5">
+          <i data-lucide="check" class="w-4 h-4"></i> Simpan Maklumat Responden
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Urus & Tambah Silibus (Canvas Input Form) -->
+  <div id="courseCanvasModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
+    <div class="glass-card rounded-3xl max-w-xl w-full flex flex-col overflow-hidden border border-emerald-500/40 shadow-2xl glow-emerald">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="book-plus" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-white text-base">Tambah Kursus & 5 Nilai Min</h3>
+            <p class="text-[11px] text-slate-400">Masukkan maklumat subjek bersama 5 skor min dimensi</p>
+          </div>
+        </div>
+        <button onclick="closeCourseCanvasModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="newCourseForm" onsubmit="handleAddNewCourse(event)" class="p-6 space-y-4 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-300 uppercase mb-1">Program</label>
+            <select id="canvas-program" onchange="handleProgramChangeInCanvas()" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+              <option value="Teknologi Automotif">Teknologi Automotif</option>
+              <option value="Teknologi Elektrik">Teknologi Elektrik</option>
+              <option value="Teknologi Senibina">Teknologi Senibina</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-300 uppercase mb-1">Semester</label>
+            <select id="canvas-semester" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+              <option value="Semester 1">Semester 1</option>
+              <option value="Semester 2" id="canvas-sem2-option">Semester 2</option>
+              <option value="Semester 3">Semester 3</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block font-bold text-slate-300 uppercase mb-1">Kod Kursus</label>
+            <input type="text" id="canvas-code" required placeholder="Cth: AUT101" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white font-bold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block font-bold text-slate-300 uppercase mb-1">Nama Penuh Kursus</label>
+            <input type="text" id="canvas-name" required placeholder="Cth: Penyelenggaraan Casis & Enjin" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- 5 Input Skor Min Subjek -->
+        <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 space-y-3">
+          <p class="font-bold text-emerald-400 text-[11px] uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Skor 5 Min Bagi Kursus Ini (1.00 - 5.00)
+          </p>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+            <div>
+              <label class="block text-[10px] font-bold text-cyan-300 mb-1">Min Kandungan</label>
+              <input type="number" step="0.01" min="1.00" max="5.00" id="canvas-min-kandungan" required value="4.30" class="w-full px-2 py-1.5 text-center font-bold bg-slate-800 border border-slate-700 rounded-lg text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-purple-300 mb-1">Min Pengajaran</label>
+              <input type="number" step="0.01" min="1.00" max="5.00" id="canvas-min-pengajaran" required value="4.45" class="w-full px-2 py-1.5 text-center font-bold bg-slate-800 border border-slate-700 rounded-lg text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-amber-300 mb-1">Min Penilaian</label>
+              <input type="number" step="0.01" min="1.00" max="5.00" id="canvas-min-penilaian" required value="4.20" class="w-full px-2 py-1.5 text-center font-bold bg-slate-800 border border-slate-700 rounded-lg text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-emerald-300 mb-1">Min 11 Item</label>
+              <input type="number" step="0.01" min="1.00" max="5.00" id="canvas-min-item11" required value="4.35" class="w-full px-2 py-1.5 text-center font-bold bg-slate-800 border border-slate-700 rounded-lg text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-pink-300 mb-1">Min Keseluruhan</label>
+              <input type="number" step="0.01" min="1.00" max="5.00" id="canvas-min-keseluruhan" placeholder="Auto / Taip" class="w-full px-2 py-1.5 text-center font-black bg-slate-800 border border-pink-500/50 rounded-lg text-pink-300">
+            </div>
+          </div>
+          <div class="pt-2 flex items-center justify-between text-[11px] text-slate-400">
+            <span>* Jika <em>Min Keseluruhan</em> dibiarkan kosong, sistem akan mengiranya secara automatik.</span>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end gap-2.5">
+          <button type="button" onclick="closeCourseCanvasModal()" class="px-4 py-2 border border-slate-700 rounded-xl text-slate-300 font-bold hover:bg-slate-800 transition">
+            Batal
+          </button>
+          <button type="submit" class="px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white rounded-xl font-bold shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+            <i data-lucide="check" class="w-4 h-4"></i> Simpan Kursus
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Import Pukal (Paste Dari Excel / Jadual Teks) -->
+  <div id="bulkImportModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
+    <div class="glass-card rounded-3xl max-w-2xl w-full flex flex-col overflow-hidden border border-cyan-500/40 shadow-2xl glow-cyan">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <i data-lucide="sheet" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-white text-base">Import Pukal Senarai Kursus & 5 Min (Excel)</h3>
+            <p class="text-[11px] text-slate-400">Salin dari Excel dan tampal terus di bawah bersama pecahan min</p>
+          </div>
+        </div>
+        <button onclick="closeBulkImportModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 text-xs">
+        <div class="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-4 text-slate-300 space-y-2">
+          <p class="font-bold text-cyan-300 flex items-center gap-1.5">
+            <i data-lucide="info" class="w-4 h-4"></i> Susunan 9 Lajur Excel (Boleh guna Tab atau Koma):
+          </p>
+          <p class="font-mono text-[10px] bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 text-slate-400 overflow-x-auto whitespace-nowrap">
+            [Program] | [Semester] | [Kod] | [Nama] | <span class="text-cyan-400">[Min Kand]</span> | <span class="text-purple-400">[Min Ajar]</span> | <span class="text-amber-400">[Min Nilai]</span> | <span class="text-emerald-400">[Min 11Item]</span> | <span class="text-pink-400 font-bold">[Min Keseluruhan]</span>
+          </p>
+          <p class="text-[11px] text-slate-400">
+            * <strong>Lajur ke-9</strong> ialah untuk nilai <strong>Min Keseluruhan</strong> sebenar anda. Jika anda tidak letakkan lajur ke-9, sistem akan automatik hitung purata untuk anda.
+          </p>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 uppercase tracking-wider mb-1.5">Tampal Data Di Sini (Paste Data):</label>
+          <textarea id="bulkDataInput" rows="7" placeholder="Teknologi Automotif	Semester 1	AUT101	Asas Kejuruteraan Enjin	4.25	4.60	4.18	4.30	4.33&#10;Teknologi Elektrik	Semester 2	ELE201	Mesin Elektrik	4.30	4.58	4.15	4.40	4.36" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white font-mono text-[11px] focus:ring-2 focus:ring-cyan-500 focus:outline-none placeholder:text-slate-600"></textarea>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+            <input type="checkbox" id="bulk-replace-checkbox" class="w-4 h-4 rounded text-cyan-500 focus:ring-0 bg-slate-900 border-slate-700">
+            <span>Gantikan semua kursus sedia ada (Padam yang lama)</span>
+          </label>
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end gap-2.5">
+          <button type="button" onclick="closeBulkImportModal()" class="px-4 py-2 border border-slate-700 rounded-xl text-slate-300 font-bold hover:bg-slate-800 transition">
+            Batal
+          </button>
+          <button type="button" onclick="processBulkImport()" class="px-5 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-xl font-bold shadow-lg shadow-cyan-500/20 transition flex items-center gap-1.5">
+            <i data-lucide="check" class="w-4 h-4"></i> Import Masuk Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Data Modal with Glassmorphism (Kemas Kini 5 Min Setiap Kursus) -->
+  <div id="editModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
+    <div class="glass-card rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-700/80 shadow-2xl">
+      <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+        <div>
+          <h3 class="font-extrabold text-white text-lg flex items-center gap-2">
+            <i data-lucide="sliders" class="w-5 h-5 text-cyan-400"></i>
+            Kemas Kini 5 Skor Min Bagi Setiap Kursus
+          </h3>
+          <p class="text-xs text-slate-400">Sunting terus skor Min Kandungan, Pengajaran, Penilaian, 11 Item dan Keseluruhan</p>
+        </div>
+        <button onclick="closeEditModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Senarai Kursus untuk Suntingan -->
+      <div id="editCoursesList" class="p-6 space-y-4 overflow-y-auto max-h-[60vh] text-xs">
+        <!-- Dijana secara dinamik oleh openEditModal() -->
+      </div>
+
+      <div class="p-4 border-t border-slate-800 bg-slate-900/90 flex justify-end gap-2.5">
+        <button type="button" onclick="closeEditModal()" class="px-4 py-2 border border-slate-700 rounded-xl text-slate-300 font-bold hover:bg-slate-800 transition">
+          Batal
+        </button>
+        <button type="button" onclick="saveCustomScores()" class="px-5 py-2 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white rounded-xl font-bold shadow-lg shadow-cyan-500/20 transition flex items-center gap-1.5">
+          <i data-lucide="check" class="w-4 h-4"></i> Simpan Skor
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Kunci Data ke GitHub (Export Data Code) -->
+  <div id="exportCodeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
+    <div class="glass-card rounded-3xl max-w-2xl w-full flex flex-col overflow-hidden border border-amber-500/40 shadow-2xl glow-emerald">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+            <i data-lucide="code" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-white text-base">Kunci Data Ini Kekal untuk GitHub</h3>
+            <p class="text-[11px] text-slate-400">Salin kod data semasa ini dan masukkan ke fail GitHub anda supaya semua orang nampak data yang sama</p>
+          </div>
+        </div>
+        <button onclick="closeExportCodeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 text-xs">
+        <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 space-y-1">
+          <p class="font-bold flex items-center gap-1.5 text-xs text-amber-300">
+            <i data-lucide="help-circle" class="w-4 h-4"></i> Mengapa data lari bila buka di peranti kawan?
+          </p>
+          <p class="text-[11px] text-slate-300 leading-relaxed">
+            Data yang anda ubah tadi tersimpan di dalam memori komputer anda sahaja (<em>localStorage</em>). Untuk jadikan data tersebut rasmi dan kekal bagi sesiapa sahaja yang melawat link GitHub anda, salin kod di bawah dan kemas kini fail di GitHub.
+          </p>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 uppercase tracking-wider mb-1.5">Kod Data Semasa (Kursus & Jantina):</label>
+          <textarea id="exportCodeTextarea" rows="8" readonly class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-cyan-300 font-mono text-[11px] focus:outline-none"></textarea>
+        </div>
+
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <span class="text-[11px] text-slate-400">Klik "Salin Kod Data" dan ikut 3 langkah mudah yang dipaparkan.</span>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="closeExportCodeModal()" class="px-4 py-2 border border-slate-700 rounded-xl text-slate-300 font-bold hover:bg-slate-800 transition">
+              Tutup
+            </button>
+            <button type="button" onclick="copyExportedCode()" class="px-5 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center gap-1.5">
+              <i data-lucide="copy" class="w-4 h-4"></i> Salin Kod Data
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900/60 border-t border-slate-800/80 mt-12 py-6 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      <div class="flex items-center space-x-2">
+        <i data-lucide="shield-check" class="w-4 h-4 text-cyan-400"></i>
+        <span>Sistem Jaminan Kualiti Kurikulum TVET © 2026 • Visualisasi Interaktif</span>
+      </div>
+      <div class="flex items-center space-x-4 font-semibold text-slate-400">
+        <span class="hover:text-cyan-400 transition cursor-default">Teknologi Automotif</span>
+        <span>•</span>
+        <span class="hover:text-cyan-400 transition cursor-default">Teknologi Elektrik</span>
+        <span>•</span>
+        <span class="hover:text-cyan-400 transition cursor-default">Teknologi Senibina</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Master Dataset: Setiap subjek mempunyai 5 nilai min
+    const initialCourseData = [
+      // 1. Program Teknologi Automotif (Sem 1, 2, 3)
+      { id: 1, program: 'Teknologi Automotif', sem: 'Semester 1', code: 'AUT101', name: 'Asas Kejuruteraan Enjin Automotif', minKandungan: 4.25, minPengajaran: 4.45, minPenilaian: 4.15, minItem11: 4.30, mean: 4.29 },
+      { id: 2, program: 'Teknologi Automotif', sem: 'Semester 1', code: 'AUT102', name: 'Amali Bengkel Servis Kenderaan I', minKandungan: 4.40, minPengajaran: 4.60, minPenilaian: 4.35, minItem11: 4.50, mean: 4.46 },
+      { id: 3, program: 'Teknologi Automotif', sem: 'Semester 2', code: 'AUT201', name: 'Sistem Transmisi & Casis', minKandungan: 4.30, minPengajaran: 4.35, minPenilaian: 4.18, minItem11: 4.25, mean: 4.27 },
+      { id: 4, program: 'Teknologi Automotif', sem: 'Semester 2', code: 'AUT202', name: 'Amali Overhaul Enjin & Diagnostik', minKandungan: 4.50, minPengajaran: 4.55, minPenilaian: 4.40, minItem11: 4.48, mean: 4.48 },
+      { id: 5, program: 'Teknologi Automotif', sem: 'Semester 3', code: 'AUT301', name: 'Elektronik Automotif Lanjutan', minKandungan: 4.28, minPengajaran: 4.40, minPenilaian: 4.20, minItem11: 4.30, mean: 4.30 },
+      { id: 6, program: 'Teknologi Automotif', sem: 'Semester 3', code: 'AUT302', name: 'Projek Inovasi Automotif & Pengurusan', minKandungan: 4.45, minPengajaran: 4.65, minPenilaian: 4.30, minItem11: 4.42, mean: 4.46 },
+
+      // 2. Program Teknologi Elektrik (Sem 1, 2, 3)
+      { id: 7, program: 'Teknologi Elektrik', sem: 'Semester 1', code: 'ELE101', name: 'Prinsip Elektrik & Litar Asas', minKandungan: 4.30, minPengajaran: 4.40, minPenilaian: 4.15, minItem11: 4.25, mean: 4.28 },
+      { id: 8, program: 'Teknologi Elektrik', sem: 'Semester 1', code: 'ELE102', name: 'Amali Pendawaian Domestik Fasa Tunggal', minKandungan: 4.50, minPengajaran: 4.58, minPenilaian: 4.30, minItem11: 4.45, mean: 4.46 },
+      { id: 9, program: 'Teknologi Elektrik', sem: 'Semester 2', code: 'ELE201', name: 'Mesin Elektrik & Kawalan Motor', minKandungan: 4.25, minPengajaran: 4.35, minPenilaian: 4.15, minItem11: 4.22, mean: 4.24 },
+      { id: 10, program: 'Teknologi Elektrik', sem: 'Semester 2', code: 'ELE202', name: 'Amali Kawalan Industri & PLC', minKandungan: 4.42, minPengajaran: 4.55, minPenilaian: 4.28, minItem11: 4.40, mean: 4.41 },
+      { id: 11, program: 'Teknologi Elektrik', sem: 'Semester 3', code: 'ELE301', name: 'Pendawaian 3 Fasa & Pemasangan Industri', minKandungan: 4.38, minPengajaran: 4.50, minPenilaian: 4.25, minItem11: 4.40, mean: 4.38 },
+      { id: 12, program: 'Teknologi Elektrik', sem: 'Semester 3', code: 'ELE302', name: 'Pengurusan Keselamatan Elektrik & Etika', minKandungan: 4.20, minPengajaran: 4.30, minPenilaian: 4.18, minItem11: 4.25, mean: 4.23 },
+
+      // 3. Program Teknologi Senibina (HANYA Sem 1 dan Sem 3)
+      { id: 13, program: 'Teknologi Senibina', sem: 'Semester 1', code: 'ARC101', name: 'Lukisan Seni Bina & Teori Rekabentuk', minKandungan: 4.35, minPengajaran: 4.40, minPenilaian: 4.20, minItem11: 4.30, mean: 4.31 },
+      { id: 14, program: 'Teknologi Senibina', sem: 'Semester 1', code: 'ARC102', name: 'Studio Reka Bentuk Asas & CAD', minKandungan: 4.45, minPengajaran: 4.58, minPenilaian: 4.35, minItem11: 4.48, mean: 4.47 },
+      { id: 15, program: 'Teknologi Senibina', sem: 'Semester 3', code: 'ARC301', name: 'BIM & Dokumentasi Pembinaan Bangunan', minKandungan: 4.50, minPengajaran: 4.60, minPenilaian: 4.38, minItem11: 4.55, mean: 4.51 },
+      { id: 16, program: 'Teknologi Senibina', sem: 'Semester 3', code: 'ARC302', name: 'Komunikasi Visual & Projek Klien', minKandungan: 4.38, minPengajaran: 4.45, minPenilaian: 4.25, minItem11: 4.38, mean: 4.37 }
+    ];
+
+    let courseData = JSON.parse(localStorage.getItem('tvet_courses_v3')) || initialCourseData;
+
+    // Data Pelajar, Responden & Jantina Asal
+    const initialGenderData = {
+      'Teknologi Automotif': { totalStudents: 190, male: 165, female: 15 },
+      'Teknologi Elektrik': { totalStudents: 165, male: 118, female: 38 },
+      'Teknologi Senibina': { totalStudents: 125, male: 56, female: 64 }
+    };
+
+    let genderData = JSON.parse(localStorage.getItem('tvet_gender_data_v1')) || initialGenderData;
+
+    let semChartInstance = null;
+    let genderChartInstance = null;
+
+    // Modal Kunci Data ke GitHub
+    function openExportCodeModal() {
+      const codePayload = `const initialCourseData = ${JSON.stringify(courseData, null, 2)};\n\nconst initialGenderData = ${JSON.stringify(genderData, null, 2)};`;
+      document.getElementById('exportCodeTextarea').value = codePayload;
+      document.getElementById('exportCodeModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeExportCodeModal() {
+      document.getElementById('exportCodeModal').classList.add('hidden');
+    }
+
+    function copyExportedCode() {
+      const ta = document.getElementById('exportCodeTextarea');
+      ta.select();
+      ta.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+      showToast('Kod data berjaya disalin ke clipboard!');
+    }
+
+    // Helper: Status Badges
+    function getStatusBadge(score) {
+      if (score >= 4.40) {
+        return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Sangat Cemerlang</span>`;
+      } else if (score >= 4.00) {
+        return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">Cemerlang</span>`;
+      } else if (score >= 3.75) {
+        return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40">Baik</span>`;
+      } else {
+        return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">Perlu Semakan</span>`;
+      }
+    }
+
+    // Program Pill styling
+    function getProgramBadge(prog) {
+      if (prog.includes('Automotif')) {
+        return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30"><span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>${prog}</span>`;
+      } else if (prog.includes('Elektrik')) {
+        return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>${prog}</span>`;
+      } else {
+        return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>${prog}</span>`;
+      }
+    }
+
+    // Populate Table dengan 5 Nilai Min Bagi Setiap Subjek
+    function renderTable(data) {
+      const tbody = document.getElementById('courseTableBody');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-slate-500">Tiada kursus yang sepadan dengan kriteria tapisan anda.</td></tr>`;
+        return;
+      }
+
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-800/40 transition border-b border-slate-800/60';
+        tr.innerHTML = `
+          <td class="py-3.5 px-5">${getProgramBadge(item.program)}</td>
+          <td class="py-3.5 px-3 text-xs font-semibold text-slate-300">
+            <span class="px-2 py-0.5 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/60">${item.sem}</span>
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="font-bold text-white text-xs sm:text-sm">${item.name}</div>
+            <div class="text-[11px] text-cyan-400/90 font-mono tracking-wide">${item.code}</div>
+          </td>
+          <td class="py-3.5 px-3 text-center font-bold text-cyan-300">${(item.minKandungan || item.mean).toFixed(2)}</td>
+          <td class="py-3.5 px-3 text-center font-bold text-purple-300">${(item.minPengajaran || item.mean).toFixed(2)}</td>
+          <td class="py-3.5 px-3 text-center font-bold text-amber-300">${(item.minPenilaian || item.mean).toFixed(2)}</td>
+          <td class="py-3.5 px-3 text-center font-bold text-emerald-300">${(item.minItem11 || item.mean).toFixed(2)}</td>
+          <td class="py-3.5 px-3 text-center">
+            <span class="font-black text-xs text-white px-2 py-1 bg-gradient-to-r from-pink-500/20 to-rose-500/20 border border-pink-500/30 rounded-lg">${item.mean.toFixed(2)}</span>
+          </td>
+          <td class="py-3.5 px-4 text-center no-print">
+            <button onclick="deleteCourse(${item.id})" class="p-1.5 text-rose-400/70 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition" title="Padam Kursus">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </td>
+          <td class="py-3.5 px-5 text-xs">${getStatusBadge(item.mean)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    // Modal Canvas Tambah Kursus
+    function openCourseCanvasModal() {
+      document.getElementById('courseCanvasModal').classList.remove('hidden');
+      handleProgramChangeInCanvas();
+      lucide.createIcons();
+    }
+
+    function closeCourseCanvasModal() {
+      document.getElementById('courseCanvasModal').classList.add('hidden');
+      document.getElementById('newCourseForm').reset();
+    }
+
+    // Modal Demografi Pelajar & Jantina
+    function openDemographicsModal() {
+      document.getElementById('input-enrol-auto').value = genderData['Teknologi Automotif'].totalStudents || 190;
+      document.getElementById('input-male-auto').value = genderData['Teknologi Automotif'].male || 0;
+      document.getElementById('input-female-auto').value = genderData['Teknologi Automotif'].female || 0;
+
+      document.getElementById('input-enrol-ele').value = genderData['Teknologi Elektrik'].totalStudents || 165;
+      document.getElementById('input-male-ele').value = genderData['Teknologi Elektrik'].male || 0;
+      document.getElementById('input-female-ele').value = genderData['Teknologi Elektrik'].female || 0;
+
+      document.getElementById('input-enrol-arc').value = genderData['Teknologi Senibina'].totalStudents || 125;
+      document.getElementById('input-male-arc').value = genderData['Teknologi Senibina'].male || 0;
+      document.getElementById('input-female-arc').value = genderData['Teknologi Senibina'].female || 0;
+
+      updateDemographicsModalSummaries();
+      document.getElementById('demographicsModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeDemographicsModal() {
+      document.getElementById('demographicsModal').classList.add('hidden');
+    }
+
+    function updateDemographicsModalSummaries() {
+      const autoResp = (parseInt(document.getElementById('input-male-auto').value) || 0) + (parseInt(document.getElementById('input-female-auto').value) || 0);
+      const eleResp = (parseInt(document.getElementById('input-male-ele').value) || 0) + (parseInt(document.getElementById('input-female-ele').value) || 0);
+      const arcResp = (parseInt(document.getElementById('input-male-arc').value) || 0) + (parseInt(document.getElementById('input-female-arc').value) || 0);
+
+      document.getElementById('demo-summary-auto').innerText = `${autoResp} Responden`;
+      document.getElementById('demo-summary-ele').innerText = `${eleResp} Responden`;
+      document.getElementById('demo-summary-arc').innerText = `${arcResp} Responden`;
+    }
+
+    function saveDemographicsData() {
+      const autoMale = parseInt(document.getElementById('input-male-auto').value) || 0;
+      const autoFemale = parseInt(document.getElementById('input-female-auto').value) || 0;
+      const autoEnrol = parseInt(document.getElementById('input-enrol-auto').value) || (autoMale + autoFemale);
+
+      const eleMale = parseInt(document.getElementById('input-male-ele').value) || 0;
+      const eleFemale = parseInt(document.getElementById('input-female-ele').value) || 0;
+      const eleEnrol = parseInt(document.getElementById('input-enrol-ele').value) || (eleMale + eleFemale);
+
+      const arcMale = parseInt(document.getElementById('input-male-arc').value) || 0;
+      const arcFemale = parseInt(document.getElementById('input-female-arc').value) || 0;
+      const arcEnrol = parseInt(document.getElementById('input-enrol-arc').value) || (arcMale + arcFemale);
+
+      genderData = {
+        'Teknologi Automotif': { totalStudents: autoEnrol, male: autoMale, female: autoFemale },
+        'Teknologi Elektrik': { totalStudents: eleEnrol, male: eleMale, female: eleFemale },
+        'Teknologi Senibina': { totalStudents: arcEnrol, male: arcMale, female: arcFemale }
+      };
+
+      localStorage.setItem('tvet_gender_data_v1', JSON.stringify(genderData));
+      closeDemographicsModal();
+      applyFilters();
+      showToast('Data bilangan pelajar, responden dan jantina berjaya dikemas kini!');
+    }
+
+    // Modal Import Pukal (Bulk Import)
+    function openBulkImportModal() {
+      document.getElementById('bulkImportModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeBulkImportModal() {
+      document.getElementById('bulkImportModal').classList.add('hidden');
+      document.getElementById('bulkDataInput').value = '';
+    }
+
+    function processBulkImport() {
+      const rawText = document.getElementById('bulkDataInput').value.trim();
+      const replaceAll = document.getElementById('bulk-replace-checkbox').checked;
+
+      if (!rawText) {
+        showToast('Sila tampal data terlebih dahulu!');
+        return;
+      }
+
+      const lines = rawText.split(/\r?\n/);
+      const newItems = [];
+      let startingId = (replaceAll ? 0 : (courseData.length > 0 ? Math.max(...courseData.map(c => c.id || 0)) : 0)) + 1;
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+
+        // Pisahkan melalui Tab (Excel copy-paste) atau Koma (CSV)
+        let parts = line.split('\t');
+        if (parts.length < 3) {
+          parts = line.split(',');
+        }
+
+        if (parts.length >= 4) {
+          let prog = parts[0] ? parts[0].trim() : 'Teknologi Automotif';
+          let sem = parts[1] ? parts[1].trim() : 'Semester 1';
+          let code = parts[2] ? parts[2].trim() : `KOD${i+1}`;
+          let name = parts[3] ? parts[3].trim() : 'Nama Kursus';
+
+          // Baca 4 pecahan min jika ada, atau gunakan nilai min tunggal
+          let vKand = parts[4] ? parseFloat(parts[4].trim()) : 4.25;
+          let vAjar = parts[5] ? parseFloat(parts[5].trim()) : vKand;
+          let vNilai = parts[6] ? parseFloat(parts[6].trim()) : vKand;
+          let vItem = parts[7] ? parseFloat(parts[7].trim()) : vKand;
+
+          if (isNaN(vKand)) vKand = 4.25;
+          if (isNaN(vAjar)) vAjar = vKand;
+          if (isNaN(vNilai)) vNilai = vKand;
+          if (isNaN(vItem)) vItem = vKand;
+
+          // Baca lajur ke-9: Min Keseluruhan (jika disediakan dalam Excel)
+          let vOverall;
+          if (parts[8] && !isNaN(parseFloat(parts[8].trim()))) {
+            vOverall = parseFloat(parseFloat(parts[8].trim()).toFixed(2));
+          } else {
+            // Jika lajur ke-9 tiada/kosong, kira purata automatik
+            vOverall = parseFloat(((vKand + vAjar + vNilai + vItem) / 4).toFixed(2));
+          }
+
+          // Pembetulan format nama program automatik
+          if (prog.toLowerCase().includes('auto')) prog = 'Teknologi Automotif';
+          else if (prog.toLowerCase().includes('elektrik')) prog = 'Teknologi Elektrik';
+          else if (prog.toLowerCase().includes('senibina') || prog.toLowerCase().includes('bina')) prog = 'Teknologi Senibina';
+
+          // Pembetulan format semester
+          if (sem.length === 1 && !isNaN(sem)) sem = `Semester ${sem}`;
+          else if (!sem.toLowerCase().includes('semester')) sem = `Semester ${sem.replace(/[^0-9]/g, '') || 1}`;
+
+          newItems.push({
+            id: startingId++,
+            program: prog,
+            sem: sem,
+            code: code,
+            name: name,
+            minKandungan: vKand,
+            minPengajaran: vAjar,
+            minPenilaian: vNilai,
+            minItem11: vItem,
+            mean: vOverall
+          });
+        }
+      }
+
+      if (newItems.length === 0) {
+        showToast('Format tidak dapat dibaca. Sila pastikan sekurang-kurangnya 4 lajur diisi.');
+        return;
+      }
+
+      if (replaceAll) {
+        courseData = newItems;
+      } else {
+        courseData = courseData.concat(newItems);
+      }
+
+      localStorage.setItem('tvet_courses_v3', JSON.stringify(courseData));
+      closeBulkImportModal();
+      applyFilters();
+      showToast(`${newItems.length} kursus bersama 5 nilai min berjaya diimport!`);
+    }
+
+    function handleProgramChangeInCanvas() {
+      const prog = document.getElementById('canvas-program').value;
+      const sem2Opt = document.getElementById('canvas-sem2-option');
+      if (prog === 'Teknologi Senibina') {
+        sem2Opt.disabled = true;
+        if (document.getElementById('canvas-semester').value === 'Semester 2') {
+          document.getElementById('canvas-semester').value = 'Semester 1';
+        }
+      } else {
+        sem2Opt.disabled = false;
+      }
+    }
+
+    function handleAddNewCourse(event) {
+      event.preventDefault();
+      const prog = document.getElementById('canvas-program').value;
+      const sem = document.getElementById('canvas-semester').value;
+      const code = document.getElementById('canvas-code').value.trim();
+      const name = document.getElementById('canvas-name').value.trim();
+
+      const minK = parseFloat(document.getElementById('canvas-min-kandungan').value) || 4.0;
+      const minP = parseFloat(document.getElementById('canvas-min-pengajaran').value) || 4.0;
+      const minPen = parseFloat(document.getElementById('canvas-min-penilaian').value) || 4.0;
+      const min11 = parseFloat(document.getElementById('canvas-min-item11').value) || 4.0;
+      
+      const customOverall = parseFloat(document.getElementById('canvas-min-keseluruhan').value);
+      const meanOverall = !isNaN(customOverall) ? customOverall : parseFloat(((minK + minP + minPen + min11) / 4).toFixed(2));
+
+      const newId = courseData.length > 0 ? Math.max(...courseData.map(c => c.id || 0)) + 1 : 1;
+
+      const newCourse = {
+        id: newId,
+        program: prog,
+        sem: sem,
+        code: code,
+        name: name,
+        minKandungan: minK,
+        minPengajaran: minP,
+        minPenilaian: minPen,
+        minItem11: min11,
+        mean: meanOverall
+      };
+
+      courseData.push(newCourse);
+      localStorage.setItem('tvet_courses_v3', JSON.stringify(courseData));
+
+      closeCourseCanvasModal();
+      applyFilters();
+      showToast(`Kursus ${code} berserta 5 skor min berjaya ditambah!`);
+    }
+
+    function deleteCourse(id) {
+      const target = courseData.find(c => c.id === id);
+      if (!target) return;
+      
+      const confirmDelete = window.confirm(`Adakah anda pasti ingin memadam kursus "${target.name} (${target.code})"?`);
+      if (confirmDelete) {
+        courseData = courseData.filter(c => c.id !== id);
+        localStorage.setItem('tvet_courses_v3', JSON.stringify(courseData));
+        applyFilters();
+        showToast(`Kursus ${target.code} telah dipadam.`);
+      }
+    }
+
+    // Chart: Semester Course Mean with Colorful Neon Gradients
+    function renderSemesterChart(programFilter = 'Semua') {
+      const canvas = document.getElementById('semesterCourseChart');
+      const ctx = canvas.getContext('2d');
+      if (semChartInstance) semChartInstance.destroy();
+
+      // Dapatkan semester semasa yang ditapis
+      const semFilter = document.getElementById('filter-semester') ? document.getElementById('filter-semester').value : 'Semua';
+
+      let labels = [];
+      let datasets = [];
+
+      // Create Custom Canvas Gradients
+      const gradIndigo = ctx.createLinearGradient(0, 0, 0, 300);
+      gradIndigo.addColorStop(0, '#6366f1');
+      gradIndigo.addColorStop(1, '#4338ca');
+
+      const gradCyan = ctx.createLinearGradient(0, 0, 0, 300);
+      gradCyan.addColorStop(0, '#06b6d4');
+      gradCyan.addColorStop(1, '#0e7490');
+
+      const gradAmber = ctx.createLinearGradient(0, 0, 0, 300);
+      gradAmber.addColorStop(0, '#fbbf24');
+      gradAmber.addColorStop(1, '#d97706');
+
+      // Helper untuk seragamkan semakan semester
+      const normalizeSem = (s) => {
+        if (!s) return '';
+        const match = s.toString().match(/\d+/);
+        return match ? `Semester ${match[0]}` : s.toString().trim();
+      };
+
+      if (programFilter === 'Semua') {
+        labels = semFilter === 'Semua' ? ['Semester 1', 'Semester 2', 'Semester 3'] : [semFilter];
+        
+        const getSemAvg = (prog, targetSem) => {
+          const filtered = courseData.filter(c => {
+            const progMatch = c.program && c.program.toLowerCase().includes(prog.replace('Teknologi ', '').toLowerCase());
+            const semMatch = normalizeSem(c.sem) === normalizeSem(targetSem);
+            return progMatch && semMatch;
+          });
+          if (filtered.length === 0) return null;
+          const sum = filtered.reduce((acc, c) => acc + (parseFloat(c.mean) || 0), 0);
+          return parseFloat((sum / filtered.length).toFixed(2));
+        };
+
+        if (semFilter === 'Semua') {
+          datasets = [
+            {
+              label: 'Teknologi Automotif',
+              data: [getSemAvg('Teknologi Automotif', 'Semester 1'), getSemAvg('Teknologi Automotif', 'Semester 2'), getSemAvg('Teknologi Automotif', 'Semester 3')],
+              backgroundColor: gradIndigo,
+              borderColor: '#818cf8',
+              borderWidth: 1.5,
+              borderRadius: 8,
+              borderSkipped: false
+            },
+            {
+              label: 'Teknologi Elektrik',
+              data: [getSemAvg('Teknologi Elektrik', 'Semester 1'), getSemAvg('Teknologi Elektrik', 'Semester 2'), getSemAvg('Teknologi Elektrik', 'Semester 3')],
+              backgroundColor: gradCyan,
+              borderColor: '#38bdf8',
+              borderWidth: 1.5,
+              borderRadius: 8,
+              borderSkipped: false
+            },
+            {
+              label: 'Teknologi Senibina (Sem 1 & 3)',
+              data: [getSemAvg('Teknologi Senibina', 'Semester 1'), null, getSemAvg('Teknologi Senibina', 'Semester 3')],
+              backgroundColor: gradAmber,
+              borderColor: '#fcd34d',
+              borderWidth: 1.5,
+              borderRadius: 8,
+              borderSkipped: false
+            }
+          ];
+        } else {
+          // Paparkan perbandingan antara 3 program bagi semester spesifik yang dipilih
+          const isSenibinaExcluded = (semFilter === 'Semester 2');
+          datasets = [
+            {
+              label: 'Purata Min Program',
+              data: [
+                getSemAvg('Teknologi Automotif', semFilter),
+                getSemAvg('Teknologi Elektrik', semFilter),
+                isSenibinaExcluded ? null : getSemAvg('Teknologi Senibina', semFilter)
+              ],
+              backgroundColor: [gradIndigo, gradCyan, gradAmber],
+              borderColor: ['#818cf8', '#38bdf8', '#fcd34d'],
+              borderWidth: 1.5,
+              borderRadius: 8,
+              borderSkipped: false
+            }
+          ];
+          labels = ['Teknologi Automotif', 'Teknologi Elektrik', isSenibinaExcluded ? 'Teknologi Senibina (Tiada)' : 'Teknologi Senibina'];
+        }
+      } else {
+        // Jika program khusus dipilih
+        const programCourses = courseData.filter(c => {
+          const matchProg = c.program && c.program.toLowerCase().includes(programFilter.replace('Teknologi ', '').toLowerCase());
+          const matchSem = (semFilter === 'Semua' || normalizeSem(c.sem) === normalizeSem(semFilter));
+          return matchProg && matchSem;
+        });
+
+        labels = programCourses.map(c => `${c.code} (${normalizeSem(c.sem).replace('Semester ', 'Sem ')})`);
+        
+        let customColor = gradIndigo;
+        let strokeColor = '#818cf8';
+        if (programFilter.includes('Elektrik')) { customColor = gradCyan; strokeColor = '#38bdf8'; }
+        if (programFilter.includes('Senibina')) { customColor = gradAmber; strokeColor = '#fcd34d'; }
+
+        datasets = [{
+          label: `Min Keseluruhan - ${programFilter}`,
+          data: programCourses.map(c => parseFloat(c.mean) || 0),
+          backgroundColor: customColor,
+          borderColor: strokeColor,
+          borderWidth: 1.5,
+          borderRadius: 8,
+          borderSkipped: false
+        }];
+      }
+
+      semChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                boxWidth: 12,
+                color: '#cbd5e1',
+                font: { size: 11, weight: 600 },
+                usePointStyle: true,
+                padding: 12
+              }
+            },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              borderColor: '#334155',
+              borderWidth: 1,
+              titleColor: '#38bdf8',
+              bodyColor: '#ffffff'
+            }
+          },
+          scales: {
+            y: {
+              min: 3.0,
+              max: 5.0,
+              grid: { color: 'rgba(255, 255, 255, 0.06)' },
+              ticks: { stepSize: 0.5, color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 11 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans', size: 11, weight: 600 } }
+            }
+          }
+        }
+      });
+    }
+
+    // Chart: Responden Jantina
+    function renderGenderChart(activeProgram = 'Semua') {
+      const ctx = document.getElementById('genderChart').getContext('2d');
+      if (genderChartInstance) genderChartInstance.destroy();
+
+      let labels = [];
+      let maleData = [];
+      let femaleData = [];
+
+      let totalStudentsCount = 0;
+      let totalRespondentsCount = 0;
+      let totalMale = 0;
+      let totalFemale = 0;
+
+      if (activeProgram === 'Semua') {
+        labels = ['Automotif', 'Elektrik', 'Senibina'];
+        maleData = [genderData['Teknologi Automotif'].male, genderData['Teknologi Elektrik'].male, genderData['Teknologi Senibina'].male];
+        femaleData = [genderData['Teknologi Automotif'].female, genderData['Teknologi Elektrik'].female, genderData['Teknologi Senibina'].female];
+
+        Object.keys(genderData).forEach(progKey => {
+          const item = genderData[progKey];
+          totalMale += item.male;
+          totalFemale += item.female;
+          totalStudentsCount += (item.totalStudents || (item.male + item.female));
+        });
+        totalRespondentsCount = totalMale + totalFemale;
+
+        const maxFemaleProg = Object.keys(genderData).reduce((prev, curr) => {
+          const prevPct = genderData[prev].female / ((genderData[prev].male + genderData[prev].female) || 1);
+          const currPct = genderData[curr].female / ((genderData[curr].male + genderData[curr].female) || 1);
+          return currPct > prevPct ? curr : prev;
+        }, 'Teknologi Senibina');
+
+        const maxPct = (((genderData[maxFemaleProg].female) / ((genderData[maxFemaleProg].male + genderData[maxFemaleProg].female) || 1)) * 100).toFixed(1);
+        document.getElementById('gender-summary-text').innerHTML = `<span class="text-pink-400 font-bold">${maxFemaleProg.replace('Teknologi ', '')}</span> mencatatkan peratusan pelajar perempuan tertinggi (${maxPct}%).`;
+
+      } else {
+        const shortName = activeProgram.replace('Teknologi ', '');
+        labels = [shortName];
+        const current = genderData[activeProgram] || { male: 0, female: 0, totalStudents: 0 };
+        maleData = [current.male];
+        femaleData = [current.female];
+
+        totalMale = current.male;
+        totalFemale = current.female;
+        totalStudentsCount = current.totalStudents || (current.male + current.female);
+        totalRespondentsCount = totalMale + totalFemale;
+
+        const femalePct = totalRespondentsCount > 0 ? ((totalFemale / totalRespondentsCount) * 100).toFixed(1) : 0;
+        document.getElementById('gender-summary-text').innerHTML = `Bagi <strong>${activeProgram}</strong>: ${totalRespondentsCount} responden (${femalePct}% perempuan).`;
+      }
+
+      // Kemas kini KPI Jumlah Responden & Jantina secara dinamik
+      document.getElementById('kpi-total-respondents').innerText = `${totalRespondentsCount} Pelajar`;
+      const participationRate = totalStudentsCount > 0 ? ((totalRespondentsCount / totalStudentsCount) * 100).toFixed(1) : 100;
+      document.getElementById('kpi-participation-rate').innerHTML = `<i data-lucide="check-check" class="w-3.5 h-3.5 mr-1 text-cyan-400"></i> Kadar penyertaan ${participationRate}% (${totalRespondentsCount}/${totalStudentsCount})`;
+
+      document.getElementById('kpi-gender-ratio').innerText = `${totalMale} L : ${totalFemale} P`;
+      const malePct = totalRespondentsCount > 0 ? Math.round((totalMale / totalRespondentsCount) * 100) : 0;
+      const femalePct = totalRespondentsCount > 0 ? Math.round((totalFemale / totalRespondentsCount) * 100) : 0;
+      document.getElementById('kpi-gender-percentage').innerHTML = `
+        <span class="w-2 h-2 rounded-full bg-blue-400 mr-1.5"></span> ${malePct}% L &nbsp;|&nbsp; 
+        <span class="w-2 h-2 rounded-full bg-pink-400 mx-1.5"></span> ${femalePct}% P
+      `;
+      lucide.createIcons();
+
+      const gradMale = ctx.createLinearGradient(0, 0, 0, 240);
+      gradMale.addColorStop(0, '#38bdf8');
+      gradMale.addColorStop(1, '#0284c7');
+
+      const gradFemale = ctx.createLinearGradient(0, 0, 0, 240);
+      gradFemale.addColorStop(0, '#f43f5e');
+      gradFemale.addColorStop(1, '#be123c');
+
+      genderChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Lelaki',
+              data: maleData,
+              backgroundColor: gradMale,
+              borderColor: '#7dd3fc',
+              borderWidth: 1.5,
+              borderRadius: 6
+            },
+            {
+              label: 'Perempuan',
+              data: femaleData,
+              backgroundColor: gradFemale,
+              borderColor: '#fda4af',
+              borderWidth: 1.5,
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { 
+              stacked: true, 
+              grid: { display: false },
+              ticks: { color: '#cbd5e1', font: { weight: 600 } }
+            },
+            y: { 
+              stacked: true, 
+              grid: { color: 'rgba(255, 255, 255, 0.06)' },
+              ticks: { color: '#94a3b8' }
+            }
+          },
+          plugins: {
+            legend: { 
+              position: 'bottom', 
+              labels: { 
+                boxWidth: 12, 
+                color: '#cbd5e1', 
+                font: { size: 11, weight: 600 },
+                usePointStyle: true,
+                padding: 12
+              } 
+            },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              borderColor: '#334155',
+              borderWidth: 1,
+              titleColor: '#38bdf8',
+              bodyColor: '#ffffff'
+            }
+          }
+        }
+      });
+    }
+
+    // Fungsi Pembantu Normalisasi Semester & Program Pintar
+    function getCleanSem(val) {
+      if (!val) return '';
+      const numMatch = val.toString().match(/\d+/);
+      return numMatch ? `Semester ${numMatch[0]}` : val.toString().trim();
+    }
+
+    function getCleanProg(val) {
+      if (!val) return '';
+      const str = val.toString().toLowerCase();
+      if (str.includes('auto')) return 'Teknologi Automotif';
+      if (str.includes('elek')) return 'Teknologi Elektrik';
+      if (str.includes('bina') || str.includes('seni')) return 'Teknologi Senibina';
+      return val.toString().trim();
+    }
+
+    // Filter Logic
+    function applyFilters() {
+      const prog = document.getElementById('filter-program').value;
+      const sem = document.getElementById('filter-semester').value;
+      const sortOpt = document.getElementById('filter-sort').value;
+
+      const targetSem = (sem === 'Semua') ? 'Semua' : getCleanSem(sem);
+      const targetProg = (prog === 'Semua') ? 'Semua' : getCleanProg(prog);
+
+      let filtered = courseData.filter(item => {
+        const itemSem = getCleanSem(item.sem);
+        const itemProg = getCleanProg(item.program);
+
+        const matchProg = (targetProg === 'Semua' || itemProg === targetProg);
+        const matchSem = (targetSem === 'Semua' || itemSem === targetSem);
+        return matchProg && matchSem;
+      });
+
+      // Sorting Logic
+      if (sortOpt === 'overall-desc') {
+        filtered.sort((a, b) => b.mean - a.mean);
+      } else if (sortOpt === 'kandungan-desc') {
+        filtered.sort((a, b) => (b.minKandungan || b.mean) - (a.minKandungan || a.mean));
+      } else if (sortOpt === 'pengajaran-desc') {
+        filtered.sort((a, b) => (b.minPengajaran || b.mean) - (a.minPengajaran || a.mean));
+      } else if (sortOpt === 'penilaian-desc') {
+        filtered.sort((a, b) => (b.minPenilaian || b.mean) - (a.minPenilaian || a.mean));
+      } else if (sortOpt === 'item11-desc') {
+        filtered.sort((a, b) => (b.minItem11 || b.mean) - (a.minItem11 || a.mean));
+      }
+
+      renderTable(filtered);
+      renderSemesterChart(prog);
+      renderGenderChart(prog);
+      updateClusterCardScores(filtered);
+
+      const sub = document.getElementById('chart-subtext');
+      if (prog === 'Semua' && sem === 'Semua') {
+        sub.innerText = 'Automotif (Sem 1, 2, 3) | Elektrik (Sem 1, 2, 3) | Senibina (Sem 1 & 3)';
+      } else if (sem !== 'Semua' && prog === 'Semua') {
+        sub.innerText = `Menunjukkan perbandingan 3 program bagi ${targetSem}`;
+      } else {
+        sub.innerText = `Menunjukkan min kursus bagi ${targetProg} (${targetSem})`;
+      }
+    }
+
+    // Dynamic Updates for 5 Dimensi Kad berdasarkan Kursus Sebenar
+    function updateClusterCardScores(currentCourses) {
+      if (!currentCourses || currentCourses.length === 0) {
+        document.getElementById('card-min-kandungan').innerText = '-';
+        document.getElementById('card-min-pengajaran').innerText = '-';
+        document.getElementById('card-min-penilaian').innerText = '-';
+        document.getElementById('card-min-11-item').innerText = '-';
+        document.getElementById('card-min-keseluruhan').innerText = '-';
+        document.getElementById('kpi-avg-mean').innerText = '-';
+        document.getElementById('kpi-course-count').innerText = `0 Kursus`;
+        return;
+      }
+
+      const count = currentCourses.length;
+      const parseVal = (val, fallback) => {
+        const num = parseFloat(val);
+        return !isNaN(num) ? num : (parseFloat(fallback) || 0);
+      };
+
+      const avgKand = (currentCourses.reduce((sum, c) => sum + parseVal(c.minKandungan, c.mean), 0) / count).toFixed(2);
+      const avgAjar = (currentCourses.reduce((sum, c) => sum + parseVal(c.minPengajaran, c.mean), 0) / count).toFixed(2);
+      const avgNilai = (currentCourses.reduce((sum, c) => sum + parseVal(c.minPenilaian, c.mean), 0) / count).toFixed(2);
+      const avg11 = (currentCourses.reduce((sum, c) => sum + parseVal(c.minItem11, c.mean), 0) / count).toFixed(2);
+      const avgOverall = (currentCourses.reduce((sum, c) => sum + parseVal(c.mean, 0), 0) / count).toFixed(2);
+
+      document.getElementById('card-min-kandungan').innerText = avgKand;
+      document.getElementById('card-min-pengajaran').innerText = avgAjar;
+      document.getElementById('card-min-penilaian').innerText = avgNilai;
+      document.getElementById('card-min-11-item').innerText = avg11;
+      document.getElementById('card-min-keseluruhan').innerText = avgOverall;
+
+      document.getElementById('kpi-avg-mean').innerText = avgOverall;
+      document.getElementById('kpi-course-count').innerText = `${count} Kursus`;
+    }
+
+    // Reset Filters
+    function resetFilters() {
+      document.getElementById('filter-program').value = 'Semua';
+      document.getElementById('filter-semester').value = 'Semua';
+      document.getElementById('filter-sort').value = 'default';
+      document.getElementById('courseSearch').value = '';
+      applyFilters();
+      showToast('Semua penapis telah dikembalikan kepada asal');
+    }
+
+    // Search filter
+    function filterCoursesTable() {
+      const input = document.getElementById('courseSearch');
+      const filter = input.value.toLowerCase();
+      const table = document.getElementById('courseTable');
+      const tr = table.getElementsByTagName('tr');
+
+      for (let i = 1; i < tr.length; i++) {
+        const textContent = tr[i].textContent || tr[i].innerText;
+        tr[i].style.display = textContent.toLowerCase().indexOf(filter) > -1 ? '' : 'none';
+      }
+    }
+
+    // Edit Modal: Memaparkan 5 input min bagi setiap kursus
+    function openEditModal() {
+      const container = document.getElementById('editCoursesList');
+      container.innerHTML = '';
+      courseData.forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = 'p-4 rounded-2xl border border-slate-700/80 bg-slate-800/50 hover:bg-slate-800/80 transition space-y-3';
+        row.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-white text-xs sm:text-sm">${item.code} - ${item.name}</span>
+            <span class="text-[11px] text-cyan-400 font-medium">${item.program} (${item.sem})</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1 border-t border-slate-700/60">
+            <div>
+              <label class="block text-[10px] font-bold text-cyan-300">Min Kandungan</label>
+              <input type="number" step="0.01" min="1.00" max="5.00" id="edit-kand-${index}" value="${(item.minKandungan || item.mean).toFixed(2)}" class="w-full px-2 py-1 text-center font-bold bg-slate-900 border border-slate-700 rounded-lg text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-purple-300">Min Pengajaran</label>
+              <input type="number" step="0.01" min="1.00" max="5.00" id="edit-ajar-${index}" value="${(item.minPengajaran || item.mean).toFixed(2)}" class="w-full px-2 py-1 text-center font-bold bg-slate-900 border border-slate-700 rounded-lg text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-amber-300">Min Penilaian</label>
+              <input type="number" step="0.01" min="1.00" max="5.00" id="edit-nilai-${index}" value="${(item.minPenilaian || item.mean).toFixed(2)}" class="w-full px-2 py-1 text-center font-bold bg-slate-900 border border-slate-700 rounded-lg text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-emerald-300">Min 11 Item</label>
+              <input type="number" step="0.01" min="1.00" max="5.00" id="edit-item11-${index}" value="${(item.minItem11 || item.mean).toFixed(2)}" class="w-full px-2 py-1 text-center font-bold bg-slate-900 border border-slate-700 rounded-lg text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-pink-300">Min Keseluruhan</label>
+              <input type="number" step="0.01" min="1.00" max="5.00" id="edit-overall-${index}" value="${item.mean.toFixed(2)}" class="w-full px-2 py-1 text-center font-black bg-slate-900 border border-pink-500/40 rounded-lg text-pink-300">
+            </div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+      document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').classList.add('hidden');
+    }
+
+    function saveCustomScores() {
+      courseData.forEach((item, index) => {
+        const elKand = document.getElementById(`edit-kand-${index}`);
+        const elAjar = document.getElementById(`edit-ajar-${index}`);
+        const elNilai = document.getElementById(`edit-nilai-${index}`);
+        const elItem = document.getElementById(`edit-item11-${index}`);
+        const elOverall = document.getElementById(`edit-overall-${index}`);
+
+        if (elKand) item.minKandungan = parseFloat(elKand.value) || 4.0;
+        if (elAjar) item.minPengajaran = parseFloat(elAjar.value) || 4.0;
+        if (elNilai) item.minPenilaian = parseFloat(elNilai.value) || 4.0;
+        if (elItem) item.minItem11 = parseFloat(elItem.value) || 4.0;
+
+        if (elOverall) {
+          const customOverall = parseFloat(elOverall.value);
+          if (!isNaN(customOverall)) {
+            item.mean = customOverall;
+          } else {
+            item.mean = parseFloat(((item.minKandungan + item.minPengajaran + item.minPenilaian + item.minItem11) / 4).toFixed(2));
+          }
+        }
+      });
+
+      localStorage.setItem('tvet_courses_v3', JSON.stringify(courseData));
+
+      closeEditModal();
+      applyFilters();
+      showToast('Semua 5 skor min bagi setiap kursus berjaya dikemas kini!');
+    }
+
+    function exportTableToCSV(filename) {
+      let csv = [];
+      csv.push(['Program', 'Semester', 'Kod Kursus', 'Nama Kursus', 'Min Kandungan', 'Min Pengajaran', 'Min Penilaian', 'Min 11 Item', 'Min Keseluruhan'].join(','));
+
+      courseData.forEach(item => {
+        const row = [
+          `"${item.program}"`,
+          `"${item.sem}"`,
+          `"${item.code}"`,
+          `"${item.name}"`,
+          (item.minKandungan || item.mean).toFixed(2),
+          (item.minPengajaran || item.mean).toFixed(2),
+          (item.minPenilaian || item.mean).toFixed(2),
+          (item.minItem11 || item.mean).toFixed(2),
+          item.mean.toFixed(2)
+        ];
+        csv.push(row.join(','));
+      });
+
+      const csvFile = new Blob([csv.join('\n')], { type: 'text/csv' });
+      const downloadLink = document.createElement('a');
+      downloadLink.download = filename;
+      downloadLink.href = window.URL.createObjectURL(csvFile);
+      downloadLink.style.display = 'none';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-message');
+      text.innerText = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    // Init on Load
+    window.onload = function() {
+      lucide.createIcons();
+      applyFilters();
+    };
+  </script>
+</body>
+</html>
